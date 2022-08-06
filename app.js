@@ -8,7 +8,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // express 객체 선언, 각종 middleware 설치
-const app = express();
+const app = express(); // express 객체 function()
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
@@ -29,8 +29,8 @@ sequelize
 // queryInterface.dropTable("Tests");
 
 // "/api" path로 연결하는 라우터 연결 (우선 routes/index.js로)
-const indexRouter = require("./routes/index.js");
-app.use("/api", [indexRouter]);
+const apiRouter = require("./routes/index.js");
+app.use("/api", [apiRouter]);
 
 // process.env. 환경변수 객체에서 본 서버의 port 번호 불러옴
 const port = process.env.PORT;

@@ -1,21 +1,22 @@
 // app.js -> index.js의 Router를 통해 들어온 이파일은,
 
 // 이 파일에 필요한 각종 외부 모듈 import
+// 이 파일에서 사용할 라우터 객체 생성
 const express = require("express");
+const router = express.Router("./dsda");
+
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 const { swaggerUi, specs } = require("../modules/swagger.js");
 // const { Op } = require("sequelize");
 
-// 이 파일에서 사용할 라우터 객체 생성
-const router = express.Router();
 // models 폴더 안에 있는 User DB 모델을 가져다 사용합니다.
 const { User } = require("../models");
 
 // 특히 User 정보는, Joi라는 모듈을 활용하여 validataion 처리합니다.
 // 회원가입할 떄 user 정보에 대한 joi 객체
-const postUsersSchema = Joi.object({
+const signupSchema = Joi.object({
   nickname: Joi.string().min(3).max(30).alphanum().required(),
   // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)
   password: Joi.string().min(4).max(30).alphanum().required(),
@@ -23,7 +24,7 @@ const postUsersSchema = Joi.object({
   confirm: Joi.string().min(4).max(30).alphanum().required(),
 });
 // 로그인 할 떄 user 입력된 정보에 대한 joi 객체
-const postAuthSchema = Joi.object({
+const loginSchema = Joi.object({
   nickname: Joi.string().min(3).max(30).alphanum().required(),
   password: Joi.string().min(4).max(30).required(),
 });
@@ -36,12 +37,12 @@ const postAuthSchema = Joi.object({
 router.post("/signup", async (req, res) => {
   try {
     // joi 객체의 스키마를 잘 통과했는지 확인
-    const { nickname, password, confirm } = await postUsersSchema.validateAsync(
+    const { nickname, password, confirm } = await signupSchema.validateAsync(
       req.body
     );
 
     // 헤더가 인증정보를 가지고 있으면 (로그인 되어 있으면,)
-    if (req.headers.authorization) {
+    if (req.cookies.token) {
       res.status(400).send({
         errorMessage: "이미 로그인이 되어있습니다.",
       });
@@ -96,7 +97,6 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     // 헤더가 인증정보를 가지고 있으면 (로그인 되어 있으면,) 반려
-    console.log(req.cookies);
     if (req.cookies.token) {
       res.status(400).send({
         errorMessage: "이미 로그인이 되어있습니다.",
@@ -105,10 +105,9 @@ router.post("/login", async (req, res) => {
     }
 
     // joi 객체의 스키마를 잘 통과했는지 확인
-    const { nickname, password } = await postAuthSchema.validateAsync(req.body);
+    const { nickname, password } = await loginSchema.validateAsync(req.body);
     // 입력된 정보로 존재하는 사용자 찾아보고
     const user = await User.findOne({ where: { nickname, password } });
-    console.log(user);
 
     // 찾아봤는데 DB에 그런 user가 없으면 반려
     if (!user) {
@@ -120,8 +119,6 @@ router.post("/login", async (req, res) => {
 
     // DB에 그런 user가 있으면 토큰을 발행하여 쿠키로 전달
     const token = jwt.sign({ userId: user.userId }, MY_SECRET_KEY);
-
-    console.log(token);
 
     res.cookie("token", `Bearer ${token}`, {
       maxAge: 30000, // 원활한 테스트를 위해 로그인 지속시간을 30초로 두었다.

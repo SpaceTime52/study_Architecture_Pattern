@@ -4,7 +4,7 @@ POST http://localhost:8001/api/signup
 Content-Type: application/json
 
 {  
-    "nickname": "Tester1",  
+    "nickname": "Tester3",  
     "password": "12345",  
     "confirm": "12345"
 }
@@ -14,7 +14,7 @@ POST http://localhost:8001/api/login
 Content-Type: application/json
 
 {  
-    "nickname": "Tester1",
+    "nickname": "Tester3",
     "password": "12345"
 }
 
@@ -29,7 +29,7 @@ POST http://localhost:8001/api/posts
 Content-Type: application/json
 
 {
-    "title": "안녕하세요22",
+    "title": "안녕하세요33",
     "content": "이런저런 글입니다24444 안녕히계세요~~"
 }
     
@@ -38,19 +38,19 @@ Content-Type: application/json
 GET http://localhost:8001/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://localhost:8001/api/posts/24
+GET http://localhost:8001/api/posts/4
 
 ### 게시글 수정 
-PUT http://localhost:8001/api/posts/15
+PUT http://localhost:8001/api/posts/3
 Content-Type: application/json
 
 { 
-    "title": "안녕하세요3",
+    "title": "안녕하세요333333",
     "content": "안녕하세요 게시글 수정합니당~."
 }
 
 ### 게시글 삭제
-DELETE http://localhost:8001/api/posts/21
+DELETE http://localhost:8001/api/posts/4
 Content-Type: application/json
 
 
@@ -58,7 +58,7 @@ Content-Type: application/json
 #################### Like! ########################
 
 ### 게시글 좋아요
-PUT http://localhost:8001/api/posts/24/like
+PUT http://localhost:8001/api/posts/3/like
 Content-Type: application/json
 
 
@@ -70,7 +70,7 @@ Content-Type: application/json
 #################### Comments ########################
 
 ### 특정 게시글에 댓글 작성   // 사용중인 유저로 진행 필요
-POST http://localhost:8001/api/comments/21
+POST http://localhost:8001/api/comments/3
 Content-Type: application/json
 
 {
@@ -78,12 +78,12 @@ Content-Type: application/json
 }
     
 ### 특정 게시글의 댓글 조회
-GET http://localhost:8001/api/comments/21
+GET http://localhost:8001/api/comments/3
 
 
 
 ### 댓글 수정
-PUT http://localhost:8001/api/comments/16
+PUT http://localhost:8001/api/comments/1
 Content-Type: application/json
 
 { 
@@ -92,5 +92,5 @@ Content-Type: application/json
 
 
 ### 댓글 삭제 
-DELETE http://localhost:8001/api/comments/16
+DELETE http://localhost:8001/api/comments/3
 Content-Type: application/json

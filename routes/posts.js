@@ -52,9 +52,11 @@ router.post("/", authMiddleware, async (req, res) => {
   try {
     // POST 요청의 body로 받은 아이들을 각 변수 title, content에 넣어줍니다.
     // 인증된 user의 정보는 미들웨어를 통해 넘겨받았습니다.
-    const { user } = await res.locals;
+    const { user } = await res.locals; // user = { userId : 1 , n: d,p:'',c:'',u:'',like:''}
+
     const { title, content } = req.body; // 변수 4개를 한꺼번에 선언했다.
 
+    console.log(title, content);
     // 그 변수들을 Post DB에 create - 생성해줍니다.
     await Post.create({
       userId: user.userId,
@@ -121,6 +123,7 @@ router.get("/:_postId", async (req, res) => {
   try {
     // URL 뒤쪽에 params{ 로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
     const { _postId } = req.params;
+
     // 이 _postId를 id로 가진 DB 요소를 모두 찾아서 thisPost라는 변수에 넣습니다.
     const thisPost = await Post.findOne({ where: { _id: _postId } });
 
