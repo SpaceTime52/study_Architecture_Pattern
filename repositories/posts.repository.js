@@ -35,10 +35,10 @@ class PostRepository {
   };
 
   // 전달된 내용으로 새로운 게시글을 작성한다. returns 작성한 게시글정보
-  createNewPost = async (nickname, password, title, content) => {
+  createNewPost = async (userId, nickname, title, content) => {
     const createdPost = await Post.create({
+      userId,
       nickname,
-      password,
       title,
       content,
     });
@@ -98,7 +98,7 @@ PostRepository 매뉴얼
   PostRepository.getPostsByLikedArray(likedArray)
   : 좋아요리스트를 보내면 그 게시글을 좋아요 수 내림차순으로 가져온다.
 
-  PostRepository.createNewPost(nickname, password, title, content)
+  PostRepository.createNewPost(userId, nicknmame, title, content)
   : 전달된 내용으로 새로운 게시글을 작성한다. returns 작성한 게시글정보
 
   PostRepository.updatePost(postId, title, content)

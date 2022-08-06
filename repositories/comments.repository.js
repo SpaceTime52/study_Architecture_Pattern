@@ -4,7 +4,7 @@
 // 필요한 시퀄라이즈 모델을 확보합니다.
 const { Comment } = require("../models");
 
-class ConmmentRepository {
+class CommentRepository {
   // postId에 해당하는 게시글에 달린 댓글을 모두 불러옴 (기본정렬 : 날짜의 내림차순 )
   getAllCommentsOn = async (postId, orderBy = "DESC") => {
     const allComments = await Comment.findAll({
@@ -54,24 +54,24 @@ class ConmmentRepository {
   };
 }
 
-module.exports = ConmmentRepository;
+module.exports = CommentRepository;
 
 /* 
-ConmmentRepository 이용 매뉴얼 
+CommentRepository 이용 매뉴얼 
 
-ConmmentRepository.getAllCommentsOn(postId, orderBy = "DESC")  
+CommentRepository.getAllCommentsOn(postId, orderBy = "DESC")  
  : postId에 해당하는 게시글에 달린 댓글을 모두 불러옴 (기본정렬 : 날짜의 내림차순 )
 
-ConmmentRepository.getCommentDetail(commentId)
+CommentRepository.getCommentDetail(commentId)
  : commentId에 해당하는 댓글을 불러옴
 
-ConmmentRepository.createComment(postId, userId, nickname, comment)
+CommentRepository.createComment(postId, userId, nickname, comment)
  : postId에 해당하는 게시글에 새로운 댓글을 생성 (returns 생성된 댓글 정보를 반환)
 
-ConmmentRepository.updateComment(commentId, comment)
+CommentRepository.updateComment(commentId, comment)
  : commentId에 해당하는 댓글을 새로운 댓글로 수정 (returns 수정된 댓글 정보를 반환)
 
-ConmmentRepository.deleteComment(commentId)
+CommentRepository.deleteComment(commentId)
  : commentId에 해당하는 댓글을 삭제 (returns 삭제된 댓글의 정보를 반환)
 
 */

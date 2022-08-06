@@ -21,6 +21,14 @@ class UserRepository {
     return userInfo;
   };
 
+  // userId와 password 동시에 맞는 1명의 유저를 찾는다.
+  getUserbyNicknamePw = async (nickname, password) => {
+    const userInfo = await User.findOne({
+      where: { nickname, password },
+    });
+    return userInfo;
+  };
+
   // User DB 생성
   createUser = async (nickname, password) => {
     const createUserData = await User.create({ nickname, password });
@@ -39,7 +47,7 @@ class UserRepository {
 
   // 이 유저가 지금까지 좋아요 누른 게시글 리스트를 반환  (배열로 반환 - [ '7', '9', '8' ] )
   getAllLikedPosts = async (userId) => {
-    let postIdsUserLiked = await User.findOne({
+    const postIdsUserLiked = await User.findOne({
       where: { userId: user.userId },
     }).then((e) => e.likedPosts);
 
