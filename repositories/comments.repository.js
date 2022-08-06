@@ -8,7 +8,7 @@ class CommentRepository {
   // postId에 해당하는 게시글에 달린 댓글을 모두 불러옴 (기본정렬 : 날짜의 내림차순 )
   getAllCommentsOn = async (postId, orderBy = "DESC") => {
     const allComments = await Comment.findAll({
-      where: { _id: _postId },
+      where: { _id: postId },
       order: [["createdAt", orderBy]],
     });
 
@@ -18,7 +18,7 @@ class CommentRepository {
   // commentId에 해당하는 댓글을 불러옴
   getCommentDetail = async (commentId) => {
     const thisComment = await Comment.findOne({
-      where: { _id: _postId },
+      where: { _id: commentId },
     });
 
     return thisComment;

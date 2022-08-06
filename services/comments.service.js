@@ -12,27 +12,43 @@ class CommentService {
   // TASK 1. 댓글 작성
   leaveCommentOn = async (user, postId, comment) => {
     // 부여받은 정보로 댓글 작성
-    await commentRepository.createComment(
-      postId,
-      user.userId,
-      user.nickname,
-      comment
-    );
 
-    return { message: "댓글을 생성하였습니다." };
+    const thisPost = await this.postRepository.getPost(postId);
+
+    // 댓글남길 포스트 id 가 존재하지 않으면,
+    if (!thisPost) {
+      return { status: 400, message: "해당 게시글이 없습니다." };
+
+      //존재하면 코멘트 남김
+    } else {
+      await this.commentRepository.createComment(
+        postId,
+        user.userId,
+        user.nickname,
+        comment
+      );
+
+      return { status: 200, message: "댓글을 생성하였습니다." };
+    }
   };
 
   // ------------------
   // TASK 2. 댓글 목록 조회
   getCommentsOn = async (postId) => {
     // postId에 해당하는 게시글 찾아서 없으면 반려
-    const thisPost = await postRepository.getPost(postId);
+    const thisPost = await this.postRepository.getPost(postId);
     if (!thisPost) {
-      return { message: "해당 게시글이 없습니다." };
+      return {
+        status: 400,
+        message: "해당 게시글이 없습니다.",
+        data: undefined,
+      };
 
       //있으면 조회
     } else {
-      const allCommentsInfo = await commentRepository.getAllCommentsOn(postId);
+      const allCommentsInfo = await this.commentRepository.getAllCommentsOn(
+        postId
+      );
 
       const data = allCommentsInfo.map((el) => {
         return {
@@ -45,35 +61,39 @@ class CommentService {
         };
       });
 
-      return data;
+      return { status: 200, message: "댓글 목록을 불러왔습니다.", data: data };
     }
   };
 
   // ------------------
   // TASK 3. 댓글 수정
   updateComment = async (user, commentId, comment) => {
-    const commentToUpdate = await commentRepository.getCommentDetail(commentId);
+    const commentToUpdate = await this.commentRepository.getCommentDetail(
+      commentId
+    );
     if (!commentToUpdate) {
-      return { message: "해당 댓글이 없습니다." };
+      return { status: 400, message: "해당 댓글이 없습니다." };
     } else if (user.nickname != commentToUpdate.nickname) {
-      return { message: "수정 권한이 없습니다." };
+      return { status: 400, message: "수정 권한이 없습니다." };
     } else {
-      await commentRepository.updateComment(commentId, comment);
-      return { message: "댓글을 수정하였습니다." };
+      await this.commentRepository.updateComment(commentId, comment);
+      return { status: 200, message: "댓글을 수정하였습니다." };
     }
   };
 
   // ------------------
   // TASK 4.게시글 삭제
   deleteComment = async (user, commentId) => {
-    const commentToUpdate = await commentRepository.getCommentDetail(commentId);
+    const commentToUpdate = await this.commentRepository.getCommentDetail(
+      commentId
+    );
     if (!commentToUpdate) {
-      return { message: "해당 댓글이 없습니다." };
+      return { status: 400, message: "해당 댓글이 없습니다." };
     } else if (user.nickname != commentToUpdate.nickname) {
-      return { message: "삭제 권한이 없습니다." };
+      return { status: 400, message: "삭제 권한이 없습니다." };
     } else {
-      await commentRepository.deleteComment(commentId);
-      return { message: "댓글을 삭제하였습니다." };
+      await this.commentRepository.deleteComment(commentId);
+      return { status: 200, message: "댓글을 삭제하였습니다." };
     }
   };
 }

@@ -8,60 +8,128 @@ const PostService = require("../services/posts.service");
 class PostsController {
   postService = new PostService(); // Post 서비스를 클래스를 컨트롤러 클래스의 멤버 변수로 할당합니다.
 
-  getPosts = async (req, res, next) => {
-    // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
-    const posts = await this.postService.findAllPost();
+  getAllPosts = async (req, res, next) => {
+    try {
+      // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
+      const posts = await this.postService.getAllPosts();
+      res.status(200).json({ data: posts });
 
-    res.status(200).json({ data: posts });
+      //에러발생 시,
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      res.status(400).send({ message });
+    }
   };
 
-  createPost = async (req, res, next) => {
-    const { nickname, password, title, content } = req.body;
+  createNewPost = async (req, res, next) => {
+    try {
+      const { user } = await res.locals;
+      const { title, content } = req.body;
+      // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
 
-    // 서비스 계층에 구현된 createPost 로직을 실행합니다.
-    const createPostData = await this.postService.createPost(
-      nickname,
-      password,
-      title,
-      content
-    );
+      const { message } = await this.postService.creatNewPost(
+        user,
+        title,
+        content
+      );
 
-    res.status(201).json({ data: createPostData });
+      return res.status(200).json({ message });
+
+      //에러발생 시,
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      return res.status(400).send({ message });
+    }
   };
 
   getPostDetail = async (req, res, next) => {
-    const { nickname, password, title, content } = req.body;
-
-    // 서비스 계층에 구현된 createPost 로직을 실행합니다.
-    const createPostData = await this.postService.createPost(
-      nickname,
-      password,
-      title,
-      content
-    );
-
-    res.status(201).json({ data: createPostData });
+    try {
+      const { _postId } = req.params;
+      const data = await this.postService.getPostDetail(_postId);
+      return res.status(200).json({ data: data });
+      //에러발생 시,
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      return res.status(400).send({ message });
+    }
   };
 
-  putPost = async (req, res, next) => {
-    // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
-    const posts = await this.postService.findAllPost();
+  updatePost = async (req, res, next) => {
+    try {
+      const { user } = await res.locals;
+      const { _postId } = req.params;
+      const { title, content } = req.body;
 
-    res.status(200).json({ data: posts });
+      const { status, message } = await this.postService.updatePost(
+        user,
+        _postId,
+        title,
+        content
+      );
+
+      return res.status(status).json({ message });
+
+      //에러발생 시,
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      return res.status(400).send({ message });
+    }
   };
 
   deletePost = async (req, res, next) => {
-    const { nickname, password, title, content } = req.body;
+    try {
+      const { user } = await res.locals;
+      const { _postId } = req.params;
 
-    // 서비스 계층에 구현된 createPost 로직을 실행합니다.
-    const createPostData = await this.postService.createPost(
-      nickname,
-      password,
-      title,
-      content
-    );
+      const { status, message } = await this.postService.deletePost(
+        user,
+        _postId
+      );
 
-    res.status(201).json({ data: createPostData });
+      return res.status(status).json({ message });
+
+      //에러발생 시,
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      return res.status(400).send({ message });
+    }
+  };
+
+  likePost = async (req, res, next) => {
+    try {
+      // 변수 정의
+      const { user } = await res.locals;
+      const { _postId } = req.params;
+
+      // 좋아요 눌렀을 때 서비스 계층으로부터 결과값 받아옴
+      const { status, message } = await likePost(user, _postId);
+
+      // 결과값 (status, message) 응답
+      return res.status(status).json({ message });
+
+      //에러발생 시,
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      return res.status(400).send({ message });
+    }
+  };
+
+  listMyLikedPosts = async (req, res, next) => {
+    try {
+      // 로그인된 유저의
+      const { user } = await res.locals;
+
+      // 포스트 좋아요 리스트와 그 디테일을 전달 받아,
+      const data = await this.postService.listMyLikedPosts(user);
+
+      // data에 담아 응답한다.
+      return res.status(200).json({ data: data });
+
+      //에러발생 시,
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      return res.status(400).send({ message });
+    }
   };
 }
 

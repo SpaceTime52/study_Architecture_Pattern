@@ -7,7 +7,7 @@
 
 // 컨트롤러에서 사용할 서비스 클래스와 그 안의 메소드를 정의
 // 그 과정에서, 다시 각 메소드가 사용할 저장소 클래스를 필요로 함(require)
-c;
+const PostRepository = require("../repositories/posts.repository");
 const UserRepository = require("../repositories/users.repository");
 
 class PostService {
@@ -17,7 +17,7 @@ class PostService {
   // ------------------
   // TASK 1 : 게시글 목록 조회
   getAllPosts = async () => {
-    const dataAll = await postRepository.getAllPosts((orderBy = "DESC"));
+    const dataAll = await this.postRepository.getAllPosts((orderBy = "DESC"));
 
     // dataAll 하나씩 돌면서 리턴 필요한 요소들만 찾아 resultData 완성
     const resultData = dataAll.map((el) => {
@@ -37,20 +37,20 @@ class PostService {
 
   // ------------------
   // TASK 2 : 게시글 작성
-  creatNewPost = async (user, title, content) => {
-    await postRepository.createNewPost(
+  createNewPost = async (user, title, content) => {
+    await this.postRepository.createNewPost(
       user.userId,
       user.nickname,
       title,
       content
     );
-    return { message: "게시글을 생성하였습니다." };
+    return { success: true, message: "게시글을 생성하였습니다." };
   };
 
   // ------------------
   // TASK 3 : 게시글 상세조회
   getPostDetail = async (postId) => {
-    const thisPost = await postRepository.getPost(postId);
+    const thisPost = await this.postRepository.getPost(postId);
     if (!thisPost) {
       return { message: "해당 게시글이 없습니다." };
     } else {
@@ -70,46 +70,50 @@ class PostService {
   // ------------------
   // TASK 4 : 게시글 수정
   updatePost = async (user, postId, title, content) => {
-    const thisPost = await postRepository.getPost(postId);
+    const thisPost = await this.postRepository.getPost(postId);
     if (!thisPost) {
-      return { message: "해당 게시글이 없습니다." };
+      return { status: 400, message: "해당 게시글이 없습니다." };
     } else if (user.nickname != thisPost.nickname) {
-      return { message: "수정 권한이 없습니다." };
+      return { status: 400, message: "수정 권한이 없습니다." };
     } else {
-      return await postRepository.updatePost(postId, title, content);
+      await this.postRepository.updatePost(postId, title, content);
+      return { status: 200, message: "게시글을 수정하였습니다." };
     }
   };
 
   // ------------------
   // TASK 5 : 게시글 삭제
   deletePost = async (user, postId) => {
-    const thisPost = await postRepository.getPost(postId);
+    const thisPost = await this.postRepository.getPost(postId);
 
     if (!thisPost) {
-      return { message: "해당 게시글이 없습니다." };
+      return { status: 400, message: "해당 게시글이 없습니다." };
     } else if (user.nickname != thisPost.nickname) {
-      return { message: "삭제 권한이 없습니다." };
+      return { status: 400, message: "삭제 권한이 없습니다." };
     } else {
-      return await postRepository.deletePost(postId);
+      await this.postRepository.deletePost(postId);
+      return { status: 200, message: "게시글을 삭제하였습니다." };
     }
   };
 
   // ------------------
   // TASK 6 : 게시글 좋아요 누르기
   likePost = async (user, postId) => {
-    const thisPost = await postRepository.getPost(postId);
-    const postIdsUserLiked = await userRepository.getAllLikedPosts(user.userId);
+    const thisPost = await this.postRepository.getPost(postId);
+    const postIdsUserLiked = await this.userRepository.getAllLikedPosts(
+      user.userId
+    );
 
     if (!thisPost) {
-      return { message: "해당 게시글이 없습니다." };
+      return { status: 400, message: "해당 게시글이 없습니다." };
     } else if (!postIdsUserLiked.includes(thisPost._id.toString())) {
-      await postRepository.likePost(postId);
-      await userRepository.likePost(userId, postId);
-      return { message: "게시글의 좋아요를 등록하였습니다." };
+      await this.postRepository.likePost(postId);
+      await this.userRepository.likePost(userId, postId);
+      return { status: 200, message: "게시글의 좋아요를 등록하였습니다." };
     } else {
-      await postRepository.dislikePost(postId);
-      await userRepository.dislikePost(userId, postId);
-      return { message: "게시글의 좋아요를 취소하였습니다." };
+      await this.postRepository.dislikePost(postId);
+      await this.userRepository.dislikePost(userId, postId);
+      return { status: 200, message: "게시글의 좋아요를 취소하였습니다." };
     }
   };
 
@@ -117,10 +121,12 @@ class PostService {
   // TASK 7 : 내가 좋아한 게시글 조회
   listMyLikedPosts = async (user) => {
     // 유저의 좋아요 배열
-    const postIdsUserLiked = await userRepository.getAllLikedPosts(user.userId);
+    const postIdsUserLiked = await this.userRepository.getAllLikedPosts(
+      user.userId
+    );
 
     // 그 배열에 해당하는 게시글 디테일
-    const postsUserLiked = await postRepository.getPostsByLikedArray(
+    const postsUserLiked = await this.postRepository.getPostsByLikedArray(
       postIdsUserLiked
     );
 

@@ -2,67 +2,98 @@
 // 라우터에서 사용할 컨트롤러 클래스와 그 안의 메소드를 정의
 // 그 과정에서, 다시 각 메소드가 사용할 서비스 클래스를 필요로 함(require)
 
-const PostService = require("../services/posts.service");
+const CommentService = require("../services/comments.service");
 
 // Post의 컨트롤러(Controller)역할을 하는 클래스
-class PostsController {
-  postService = new PostService(); // Post 서비스를 클래스를 컨트롤러 클래스의 멤버 변수로 할당합니다.
+class CommentsController {
+  commentService = new CommentService(); // Post 서비스를 클래스를 컨트롤러 클래스의 멤버 변수로 할당합니다.
 
-  getPosts = async (req, res, next) => {
-    // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
-    const posts = await this.postService.findAllPost();
+  leaveComment = async (req, res, next) => {
+    try {
+      // 받은 변수 정리, 예외처리
+      const { user } = await res.locals;
+      const { _postId } = req.params;
+      const { comment } = req.body;
+      if (!comment) {
+        return res.json({ message: "댓글 내용을 입력해주세요" });
+      }
 
-    res.status(200).json({ data: posts });
+      // 서비스 계층으로부터 답을 받음
+      const { status, message } = this.commentService.leaveCommentOn(
+        user,
+        _postId,
+        comment
+      );
+
+      return res.status(status).send({ message });
+
+      // 예외시 처리
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      return res.status(400).send({ message });
+    }
   };
 
-  createPost = async (req, res, next) => {
-    const { nickname, password, title, content } = req.body;
+  getCommentsOn = async (req, res, next) => {
+    try {
+      // 받은 변수 정리, 예외처리
+      const { _postId } = req.params;
 
-    // 서비스 계층에 구현된 createPost 로직을 실행합니다.
-    const createPostData = await this.postService.createPost(
-      nickname,
-      password,
-      title,
-      content
-    );
+      // 댓글 목록 조회
+      const { status, message, data } = await getCommentsOn(_postId);
 
-    res.status(201).json({ data: createPostData });
+      // 상탱와 데이터 응답
+      return res.status(status).json({ message, data: data });
+
+      // 예외시 처리
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      res.status(400).send({ message });
+    }
   };
 
-  getPostDetail = async (req, res, next) => {
-    const { nickname, password, title, content } = req.body;
+  updateComment = async (req, res, next) => {
+    try {
+      // 필요한 변수 확보 및 검증
+      const { user } = await res.locals;
+      const { _commentId } = req.params;
+      const { comment } = req.body;
+      if (!comment) {
+        return res.status(400).json({ message: "댓글 내용을 입력해주세요" });
+      }
 
-    // 서비스 계층에 구현된 createPost 로직을 실행합니다.
-    const createPostData = await this.postService.createPost(
-      nickname,
-      password,
-      title,
-      content
-    );
+      const { status, message } = await this.commentService.updateComment(
+        user,
+        _commentId,
+        comment
+      );
 
-    res.status(201).json({ data: createPostData });
+      return res.status(status).json({ message });
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      res.status(400).send({ message });
+    }
   };
 
-  putPost = async (req, res, next) => {
-    // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
-    const posts = await this.postService.findAllPost();
+  deleteComment = async (req, res, next) => {
+    try {
+      // 필요한 변수 확보 및 검증
+      const { user } = await res.locals;
+      const { _commentId } = req.params;
 
-    res.status(200).json({ data: posts });
-  };
+      const { status, message } = await this.commentService.deleteComment(
+        user,
+        _commentId
+      );
 
-  deletePost = async (req, res, next) => {
-    const { nickname, password, title, content } = req.body;
+      return res.status(status).json({ message });
 
-    // 서비스 계층에 구현된 createPost 로직을 실행합니다.
-    const createPostData = await this.postService.createPost(
-      nickname,
-      password,
-      title,
-      content
-    );
-
-    res.status(201).json({ data: createPostData });
+      // 예외시 처리
+    } catch (error) {
+      const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      res.status(400).send({ message });
+    }
   };
 }
 
-module.exports = PostsController;
+module.exports = CommentsController;

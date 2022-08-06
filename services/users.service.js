@@ -10,31 +10,38 @@ class UserService {
   // 검증이 완료된 nickname과 password를 받아, 기존 유저가 없으면
   signUp = async (nickname, password) => {
     // 기존에 같은 닉네임을 가진 유저가 있는지 확인
-    const existUsers = await userRepository.getUserbyNickname(nickname);
+    const existUsers = await this.userRepository.getUserbyNickname(nickname);
 
     // 기존에 같은 닉네임을 가진 유저가 있으면 에러메세지
     if (existUsers) {
-      return { message: "이미 사용중인 닉네임 입니다." };
+      return { success: false, message: "이미 사용중인 닉네임 입니다." };
     } else {
       // 기존에 같은 닉네임을 가진 유저가 없으면 가입 가능
-      await userRepository.createUser(nickname, password);
-      return { message: "회원 가입에 성공하였습니다." };
+      await this.userRepository.createUser(nickname, password);
+      return { success: true, message: "회원 가입에 성공하였습니다." };
     }
   };
 
   // 검증이 완료된 nickname과 password를 받아, 토큰을 반환해줍니다.
   getToken = async (nickname, password) => {
     // 접속을 시도한 동일한 유저정보(ID, PW)가 있는지 확인해보고,
-    const user = await userRepository.getUserbyNicknamePw(nickname, password);
+    const user = await this.userRepository.getUserbyNicknamePw(
+      nickname,
+      password
+    );
 
     // 찾아봤는데 DB에 그런 user가 없으면 반려
     if (!user) {
-      return { message: "닉네임 또는 패스워드를 확인해주세요." };
+      return {
+        success: false,
+        message: "닉네임 또는 패스워드를 확인해주세요.",
+      };
 
       // DB에 그런 user가 있으면 userId를 payload에 담은 토큰에 서명,발행하여 리턴
     } else {
       const token = jwt.sign({ userId: user.userId }, MY_SECRET_KEY);
-      return token;
+
+      return { success: true, token: token };
     }
   };
 }
