@@ -85,3 +85,32 @@ class PostRepository {
   };
 }
 module.exports = PostRepository;
+
+/*
+PostRepository 매뉴얼 
+
+  PostRepository.getPost(postId) 
+  : postId를 받아 게시글 1개의 정보를 반환한다.
+  
+  PostRepository.getAllPosts(orderBy = "DESC")
+  : 작성된 모든 게시글의 상세 정보를 요청한 발행일 순서대로 으로 모두 불러옴 (기본값 날짜 내림차순)
+
+  PostRepository.getPostsByLikedArray(likedArray)
+  : 좋아요리스트를 보내면 그 게시글을 좋아요 수 내림차순으로 가져온다.
+
+  PostRepository.createNewPost(nickname, password, title, content)
+  : 전달된 내용으로 새로운 게시글을 작성한다. returns 작성한 게시글정보
+
+  PostRepository.updatePost(postId, title, content)
+  : 전달된 postId에 해당하는 게시글을 수정하여 저장한다. returns 수정한 게시글정보
+
+  PostRepository.likePost(postId)
+  : postId에 해당하는 게시글의 좋아요를 1개 올린다. returns 좋아한 게시글의 현재 좋아요 수
+
+  PostRepository.dislikePost(postId)
+  : postId에 해당하는 게시글의 좋아요를 1개 내린다. returns 좋아요 취소한 게시글의 현재 좋아요 수
+
+  PostRepository.deletePost(postId)
+  : 전달된 postId에 해당하는 게시글을 삭제한. returns 삭제한 게시글정보
+
+*/
