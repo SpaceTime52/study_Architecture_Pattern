@@ -19,10 +19,6 @@ Content-Type: application/json
 }
 
 
-### 로그아웃
-POST http://localhost:8001/api/logout
-Content-Type: application/json
-
 
 ### 게시글 작성 셍성 
 POST http://localhost:8001/api/posts
@@ -38,7 +34,7 @@ Content-Type: application/json
 GET http://localhost:8001/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://localhost:8001/api/posts/4
+GET http://localhost:8001/api/posts/5
 
 ### 게시글 수정 
 PUT http://localhost:8001/api/posts/3
@@ -50,7 +46,7 @@ Content-Type: application/json
 }
 
 ### 게시글 삭제
-DELETE http://localhost:8001/api/posts/4
+DELETE http://localhost:8001/api/posts/5
 Content-Type: application/json
 
 
@@ -74,7 +70,7 @@ POST http://localhost:8001/api/comments/3
 Content-Type: application/json
 
 {
-    "comment": "안녕하세요 댓글입니다."
+    "comment": "안녕하세요 댓글입니다~~."
 }
     
 ### 특정 게시글의 댓글 조회
@@ -83,7 +79,7 @@ GET http://localhost:8001/api/comments/3
 
 
 ### 댓글 수정
-PUT http://localhost:8001/api/comments/1
+PUT http://localhost:8001/api/comments/11
 Content-Type: application/json
 
 { 
@@ -92,5 +88,5 @@ Content-Type: application/json
 
 
 ### 댓글 삭제 
-DELETE http://localhost:8001/api/comments/3
+DELETE http://localhost:8001/api/comments/11
 Content-Type: application/json

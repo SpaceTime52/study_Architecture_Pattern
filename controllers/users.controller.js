@@ -23,9 +23,10 @@ class UsersController {
   userService = new UserService();
 
   // 어떤 요청에 대해서는 회원가입 진행 후 메세지를 반환합니다.
-  signUp = async (req, res, next) => {
+  signUp = async (req, res) => {
     try {
       // joi 객체의 스키마를 잘 통과했는지 확인
+
       const { nickname, password, confirm } = await signupSchema.validateAsync(
         req.body
       );
@@ -73,7 +74,7 @@ class UsersController {
     }
   };
 
-  login = async (req, res, next) => {
+  login = async (req, res) => {
     try {
       // joi 객체의 스키마를 잘 통과했는지 확인
       const { nickname, password } = await loginSchema.validateAsync(req.body);

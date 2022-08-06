@@ -19,7 +19,7 @@ class CommentsController {
       }
 
       // 서비스 계층으로부터 답을 받음
-      const { status, message } = this.commentService.leaveCommentOn(
+      const { status, message } = await this.commentService.leaveCommentOn(
         user,
         _postId,
         comment
@@ -40,7 +40,9 @@ class CommentsController {
       const { _postId } = req.params;
 
       // 댓글 목록 조회
-      const { status, message, data } = await getCommentsOn(_postId);
+      const { status, message, data } = await this.commentService.getCommentsOn(
+        _postId
+      );
 
       // 상탱와 데이터 응답
       return res.status(status).json({ message, data: data });

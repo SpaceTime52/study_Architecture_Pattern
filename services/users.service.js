@@ -3,6 +3,7 @@
 
 const jwt = require("jsonwebtoken");
 const UserRepository = require("../repositories/users.repository");
+const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 
 class UserService {
   userRepository = new UserRepository();

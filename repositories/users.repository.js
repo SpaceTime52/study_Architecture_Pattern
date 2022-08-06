@@ -48,7 +48,7 @@ class UserRepository {
   // 이 유저가 지금까지 좋아요 누른 게시글 리스트를 반환  (배열로 반환 - [ '7', '9', '8' ] )
   getAllLikedPosts = async (userId) => {
     const postIdsUserLiked = await User.findOne({
-      where: { userId: user.userId },
+      where: { userId: userId },
     }).then((e) => e.likedPosts);
 
     return postIdsUserLiked; // 배열로 반환
@@ -57,7 +57,7 @@ class UserRepository {
   // userId에 해당하는 유저가 좋아한 게시글 배열에 하나 추가. returns 이후 유저가 지금까지 좋아한 리스트 반환
   likePost = async (userId, postId) => {
     // 지금까지 좋아한 배열을 불러옴
-    const likedPosts = this.getAllLikedPosts(userId);
+    let likedPosts = await this.getAllLikedPosts(userId);
     likedPosts.push(postId); // 이번에 좋아한 게시글 id 하나를 추가함
 
     // 서비스에 따라 혹시 중복되어 있을 수 있으므로 set으로 중복 제거 후 다시 배열화
@@ -74,10 +74,10 @@ class UserRepository {
   // userId에 해당하는 유저가 좋아한 게시글 배열에 하나 삭제. returns 이후 유저가 지금까지 좋아한 리스트 반환
   dislikePost = async (userId, postId) => {
     // 지금까지 좋아한 배열을 불러옴
-    const likedPosts = this.getAllLikedPosts(userId);
+    let likedPosts = await this.getAllLikedPosts(userId);
 
     // 그 중에 이번에 삭제할 id를 걸러낸 배열 반환
-    likedPosts = likedPosts.filter((element) => element !== _postId);
+    likedPosts = likedPosts.filter((element) => element !== postId);
 
     // 해당 배열로 새로운 리스트를 DB에 업데이트한 후 그 배열을 return
     const newLikedPosts = await User.update(

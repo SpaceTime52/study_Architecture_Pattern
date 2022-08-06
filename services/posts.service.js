@@ -17,7 +17,7 @@ class PostService {
   // ------------------
   // TASK 1 : 게시글 목록 조회
   getAllPosts = async () => {
-    const dataAll = await this.postRepository.getAllPosts((orderBy = "DESC"));
+    const dataAll = await this.postRepository.getAllPosts("DESC");
 
     // dataAll 하나씩 돌면서 리턴 필요한 요소들만 찾아 resultData 완성
     const resultData = dataAll.map((el) => {
@@ -104,15 +104,16 @@ class PostService {
       user.userId
     );
 
+    console.log(user.userId);
     if (!thisPost) {
       return { status: 400, message: "해당 게시글이 없습니다." };
     } else if (!postIdsUserLiked.includes(thisPost._id.toString())) {
       await this.postRepository.likePost(postId);
-      await this.userRepository.likePost(userId, postId);
+      await this.userRepository.likePost(user.userId, postId);
       return { status: 200, message: "게시글의 좋아요를 등록하였습니다." };
     } else {
       await this.postRepository.dislikePost(postId);
-      await this.userRepository.dislikePost(userId, postId);
+      await this.userRepository.dislikePost(user.userId, postId);
       return { status: 200, message: "게시글의 좋아요를 취소하였습니다." };
     }
   };

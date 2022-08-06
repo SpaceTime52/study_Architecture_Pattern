@@ -50,6 +50,8 @@ class CommentService {
         postId
       );
 
+      console.log(allCommentsInfo);
+
       const data = allCommentsInfo.map((el) => {
         return {
           commentId: el._id,

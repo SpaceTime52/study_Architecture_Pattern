@@ -27,7 +27,7 @@ class PostsController {
       const { title, content } = req.body;
       // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
 
-      const { message } = await this.postService.creatNewPost(
+      const { message } = await this.postService.createNewPost(
         user,
         title,
         content
@@ -102,7 +102,10 @@ class PostsController {
       const { _postId } = req.params;
 
       // 좋아요 눌렀을 때 서비스 계층으로부터 결과값 받아옴
-      const { status, message } = await likePost(user, _postId);
+      const { status, message } = await this.postService.likePost(
+        user,
+        _postId
+      );
 
       // 결과값 (status, message) 응답
       return res.status(status).json({ message });
