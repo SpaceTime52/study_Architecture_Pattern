@@ -14,9 +14,10 @@ class PostService {
   postRepository = new PostRepository();
   userRepository = new UserRepository();
 
-  // ------------------
   // TASK 1 : 게시글 목록 조회
   getAllPosts = async () => {
+    console.log("**** --- PostService.getAllPosts ---");
+
     const dataAll = await this.postRepository.getAllPosts("DESC");
 
     // dataAll 하나씩 돌면서 리턴 필요한 요소들만 찾아 resultData 완성
@@ -32,25 +33,28 @@ class PostService {
       };
     });
 
+    console.log("**** --- PostService.getAllPosts Returns ---");
     return resultData; //  = [ { ... }, { ... }, { ... } ]
   };
-
-  // ------------------
   // TASK 2 : 게시글 작성
   createNewPost = async (user, title, content) => {
+    console.log("**** --- PostService.createNewPost ---");
     await this.postRepository.createNewPost(
       user.userId,
       user.nickname,
       title,
       content
     );
+
+    console.log("**** --- PostService.createNewPost Returns---");
     return { success: true, message: "게시글을 생성하였습니다." };
   };
-
-  // ------------------
   // TASK 3 : 게시글 상세조회
   getPostDetail = async (postId) => {
+    console.log("**** --- PostService.getPostDetail ---");
     const thisPost = await this.postRepository.getPost(postId);
+
+    console.log("**** --- PostService.getPostDetail returns---");
     if (!thisPost) {
       return { message: "해당 게시글이 없습니다." };
     } else {
@@ -66,11 +70,12 @@ class PostService {
       };
     }
   };
-
-  // ------------------
   // TASK 4 : 게시글 수정
   updatePost = async (user, postId, title, content) => {
+    console.log("**** --- PostService.updatePost ---");
     const thisPost = await this.postRepository.getPost(postId);
+
+    console.log("**** --- PostService.updatePost returns ---");
     if (!thisPost) {
       return { status: 400, message: "해당 게시글이 없습니다." };
     } else if (user.nickname != thisPost.nickname) {
@@ -80,12 +85,13 @@ class PostService {
       return { status: 200, message: "게시글을 수정하였습니다." };
     }
   };
-
-  // ------------------
   // TASK 5 : 게시글 삭제
   deletePost = async (user, postId) => {
+    console.log("**** --- PostService.deletePost ---");
+
     const thisPost = await this.postRepository.getPost(postId);
 
+    console.log("**** --- PostService.deletePost returns ---");
     if (!thisPost) {
       return { status: 400, message: "해당 게시글이 없습니다." };
     } else if (user.nickname != thisPost.nickname) {
@@ -95,32 +101,32 @@ class PostService {
       return { status: 200, message: "게시글을 삭제하였습니다." };
     }
   };
-
-  // ------------------
   // TASK 6 : 게시글 좋아요 누르기
   likePost = async (user, postId) => {
+    console.log("**** --- PostService.likePost ---");
     const thisPost = await this.postRepository.getPost(postId);
     const postIdsUserLiked = await this.userRepository.getAllLikedPosts(
       user.userId
     );
 
-    console.log(user.userId);
     if (!thisPost) {
+      console.log("**** --- PostService.likePost Reutrns ---");
       return { status: 400, message: "해당 게시글이 없습니다." };
     } else if (!postIdsUserLiked.includes(thisPost._id.toString())) {
       await this.postRepository.likePost(postId);
       await this.userRepository.likePost(user.userId, postId);
+      console.log("**** --- PostService.likePost Reutrns ---");
       return { status: 200, message: "게시글의 좋아요를 등록하였습니다." };
     } else {
       await this.postRepository.dislikePost(postId);
       await this.userRepository.dislikePost(user.userId, postId);
+      console.log("**** --- PostService.likePost Reutrns ---");
       return { status: 200, message: "게시글의 좋아요를 취소하였습니다." };
     }
   };
-
-  // ------------------
   // TASK 7 : 내가 좋아한 게시글 조회
   listMyLikedPosts = async (user) => {
+    console.log("**** --- PostService.listMyLikedPosts ---");
     // 유저의 좋아요 배열
     const postIdsUserLiked = await this.userRepository.getAllLikedPosts(
       user.userId
@@ -143,6 +149,8 @@ class PostService {
         likes: el.likes,
       };
     });
+
+    console.log("**** --- PostService.listMyLikedPosts Returns ---");
 
     return data;
   };

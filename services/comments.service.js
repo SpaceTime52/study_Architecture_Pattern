@@ -11,11 +11,14 @@ class CommentService {
   // ------------------
   // TASK 1. 댓글 작성
   leaveCommentOn = async (user, postId, comment) => {
-    // 부여받은 정보로 댓글 작성
+    console.log("**** --- CommentService.leaveCommentOn---");
 
+    // 부여받은 정보로 댓글 작성
     const thisPost = await this.postRepository.getPost(postId);
 
     // 댓글남길 포스트 id 가 존재하지 않으면,
+
+    console.log("**** --- CommentService.leaveCommentOn Returns---");
     if (!thisPost) {
       return { status: 400, message: "해당 게시글이 없습니다." };
 
@@ -35,9 +38,12 @@ class CommentService {
   // ------------------
   // TASK 2. 댓글 목록 조회
   getCommentsOn = async (postId) => {
+    console.log("**** --- CommentService.getCommentsOn---");
+
     // postId에 해당하는 게시글 찾아서 없으면 반려
     const thisPost = await this.postRepository.getPost(postId);
     if (!thisPost) {
+      console.log("**** --- CommentService.getCommentsOn End---");
       return {
         status: 400,
         message: "해당 게시글이 없습니다.",
@@ -63,6 +69,7 @@ class CommentService {
         };
       });
 
+      console.log("**** --- CommentService.getCommentsOn End---");
       return { status: 200, message: "댓글 목록을 불러왔습니다.", data: data };
     }
   };
@@ -70,15 +77,18 @@ class CommentService {
   // ------------------
   // TASK 3. 댓글 수정
   updateComment = async (user, commentId, comment) => {
+    console.log("**** --- CommentService.updateComment---");
     const commentToUpdate = await this.commentRepository.getCommentDetail(
       commentId
     );
+    console.log("**** --- CommentService.updateComment End---");
     if (!commentToUpdate) {
       return { status: 400, message: "해당 댓글이 없습니다." };
     } else if (user.nickname != commentToUpdate.nickname) {
       return { status: 400, message: "수정 권한이 없습니다." };
     } else {
       await this.commentRepository.updateComment(commentId, comment);
+
       return { status: 200, message: "댓글을 수정하였습니다." };
     }
   };
@@ -86,9 +96,14 @@ class CommentService {
   // ------------------
   // TASK 4.게시글 삭제
   deleteComment = async (user, commentId) => {
+    console.log("**** --- CommentService.deleteComment---");
+
     const commentToUpdate = await this.commentRepository.getCommentDetail(
       commentId
     );
+
+    console.log("**** --- CommentService.deleteComment End---");
+
     if (!commentToUpdate) {
       return { status: 400, message: "해당 댓글이 없습니다." };
     } else if (user.nickname != commentToUpdate.nickname) {

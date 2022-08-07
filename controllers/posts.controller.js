@@ -10,9 +10,14 @@ class PostsController {
 
   getAllPosts = async (req, res, next) => {
     try {
+      console.log("** --- PostsController.getAllPosts ---");
+
       // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
       const posts = await this.postService.getAllPosts();
-      res.status(200).json({ data: posts });
+
+      console.log("** --- PostsController.getAllPosts returns ---");
+
+      return res.status(200).json({ data: posts });
 
       //에러발생 시,
     } catch (error) {
@@ -23,6 +28,7 @@ class PostsController {
 
   createNewPost = async (req, res, next) => {
     try {
+      console.log("** --- PostsController.createNewPost ---");
       const { user } = await res.locals;
       const { title, content } = req.body;
       // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
@@ -32,7 +38,7 @@ class PostsController {
         title,
         content
       );
-
+      console.log("** --- PostsController.createNewPost Returns ---");
       return res.status(200).json({ message });
 
       //에러발생 시,
@@ -44,8 +50,10 @@ class PostsController {
 
   getPostDetail = async (req, res, next) => {
     try {
+      console.log("** --- PostsController.getPostDetail ---");
       const { _postId } = req.params;
       const data = await this.postService.getPostDetail(_postId);
+      console.log("** --- PostsController.getPostDetail Returns ---");
       return res.status(200).json({ data: data });
       //에러발생 시,
     } catch (error) {
@@ -56,6 +64,7 @@ class PostsController {
 
   updatePost = async (req, res, next) => {
     try {
+      console.log("** --- PostsController.updatePost ---");
       const { user } = await res.locals;
       const { _postId } = req.params;
       const { title, content } = req.body;
@@ -67,6 +76,7 @@ class PostsController {
         content
       );
 
+      console.log("** --- PostsController.updatePost Returns ---");
       return res.status(status).json({ message });
 
       //에러발생 시,
@@ -78,6 +88,7 @@ class PostsController {
 
   deletePost = async (req, res, next) => {
     try {
+      console.log("** --- PostsController.deletePost ---");
       const { user } = await res.locals;
       const { _postId } = req.params;
 
@@ -86,6 +97,7 @@ class PostsController {
         _postId
       );
 
+      console.log("** --- PostsController.deletePost Returns ---");
       return res.status(status).json({ message });
 
       //에러발생 시,
@@ -97,6 +109,7 @@ class PostsController {
 
   likePost = async (req, res, next) => {
     try {
+      console.log("** --- PostsController.likePost ---");
       // 변수 정의
       const { user } = await res.locals;
       const { _postId } = req.params;
@@ -108,6 +121,7 @@ class PostsController {
       );
 
       // 결과값 (status, message) 응답
+      console.log("** --- PostsController.likePost Returns ---");
       return res.status(status).json({ message });
 
       //에러발생 시,
@@ -119,6 +133,7 @@ class PostsController {
 
   listMyLikedPosts = async (req, res, next) => {
     try {
+      console.log("** --- PostsController.listMyLikedPosts ---");
       // 로그인된 유저의
       const { user } = await res.locals;
 
@@ -126,6 +141,7 @@ class PostsController {
       const data = await this.postService.listMyLikedPosts(user);
 
       // data에 담아 응답한다.
+      console.log("** --- PostsController.listMyLikedPosts Return ---");
       return res.status(200).json({ data: data });
 
       //에러발생 시,

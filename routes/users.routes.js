@@ -12,6 +12,8 @@ const { swaggerUi, specs } = require("../modules/swagger.js");
 const UsersController = require("../controllers/users.controller");
 const usersController = new UsersController();
 
+console.log("** --- User Router ---");
+
 // TASK 1 : 회원 가입 API with POST  ('/api/signup')
 router.post("/signup", usersController.signUp);
 // TASK 2 : 로그인 기능 ('/api/login')
@@ -19,6 +21,9 @@ router.post("/login", usersController.login);
 // '/api' 주소에 곧장 swagger 사용
 router.use("/", swaggerUi.serve, swaggerUi.setup(specs));
 // 이 파일의 router 객체를 외부에 공개합니다.
+
+console.log("** --- User Router Set ---");
+
 module.exports = router;
 
 /**

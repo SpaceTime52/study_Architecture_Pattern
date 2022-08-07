@@ -7,55 +7,82 @@ const { User } = require("../models");
 class UserRepository {
   // nickname에 해당하는 1명의 유저를 찾는다.
   getUserbyNickname = async (nickname) => {
+    console.log("****** --- UserRepository.getUserbyNickname ---");
     const userInfo = await User.findOne({
       where: { nickname },
     });
+
+    console.log("****** --- UserRepository.getUserbyNickname Returns ---");
     return userInfo;
   };
 
   // userId에 해당하는 1명의 유저를 찾는다.
   getUserbyId = async (userId) => {
+    console.log("****** --- UserRepository.getUserbyId ---");
+
     const userInfo = await User.findOne({
       where: { userId },
     });
+
+    console.log("****** --- UserRepository.getUserbyId Returns ---");
+
     return userInfo;
   };
 
   // userId와 password 동시에 맞는 1명의 유저를 찾는다.
   getUserbyNicknamePw = async (nickname, password) => {
+    console.log("****** --- UserRepository.getUserbyNicknamePw ---");
+
     const userInfo = await User.findOne({
       where: { nickname, password },
     });
+
+    console.log("****** --- UserRepository.getUserbyNicknamePw Returns ---");
+
     return userInfo;
   };
 
   // User DB 생성
   createUser = async (nickname, password) => {
+    console.log("****** --- UserRepository.createUser ---");
+
     const createUserData = await User.create({ nickname, password });
+
+    console.log("****** --- UserRepository.createUser Returns ---");
 
     return createUserData;
   };
 
   // 가입된 User를 요청한 가입일 순서대로 으로 모두 불러옴 (기본값 날짜 내림차순)
   getAllUsers = async (orderBy = "DESC") => {
+    console.log("****** --- UserRepository.getAllUsers ---");
+
     const allUsers = await User.findAll({
       order: [["createdAt", orderBy]],
     });
+
+    console.log("****** --- UserRepository.getAllUsers Returns ---");
 
     return allUsers;
   };
 
   // 이 유저가 지금까지 좋아요 누른 게시글 리스트를 반환  (배열로 반환 - [ '7', '9', '8' ] )
   getAllLikedPosts = async (userId) => {
+    console.log("****** --- UserRepository.getAllLikedPosts ---");
+
     const postIdsUserLiked = await User.findOne({
       where: { userId: userId },
     }).then((e) => e.likedPosts);
+
+    console.log("****** --- UserRepository.getAllLikedPosts Returns ---");
 
     return postIdsUserLiked; // 배열로 반환
   };
 
   // userId에 해당하는 유저가 좋아한 게시글 배열에 하나 추가. returns 이후 유저가 지금까지 좋아한 리스트 반환
   likePost = async (userId, postId) => {
+    console.log("****** --- UserRepository.likePost ---");
+
     // 지금까지 좋아한 배열을 불러옴
     let likedPosts = await this.getAllLikedPosts(userId);
     likedPosts.push(postId); // 이번에 좋아한 게시글 id 하나를 추가함
@@ -68,11 +95,15 @@ class UserRepository {
       { where: { userId: userId } }
     );
 
+    console.log("****** --- UserRepository.likePost Returns ---");
+
     return newLikedPosts;
   };
 
   // userId에 해당하는 유저가 좋아한 게시글 배열에 하나 삭제. returns 이후 유저가 지금까지 좋아한 리스트 반환
   dislikePost = async (userId, postId) => {
+    console.log("****** --- UserRepository.dislikePost ---");
+
     // 지금까지 좋아한 배열을 불러옴
     let likedPosts = await this.getAllLikedPosts(userId);
 
@@ -84,6 +115,9 @@ class UserRepository {
       { likedPosts: likedPosts },
       { where: { userId: userId } }
     );
+
+    console.log("****** --- UserRepository.dislikePost Returns ---");
+
     return newLikedPosts;
   };
 }

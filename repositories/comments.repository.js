@@ -7,25 +7,30 @@ const { Comment } = require("../models");
 class CommentRepository {
   // postId에 해당하는 게시글에 달린 댓글을 모두 불러옴 (기본정렬 : 날짜의 내림차순 )
   getAllCommentsOn = async (postId, orderBy = "DESC") => {
+    console.log("****** --- CommentRepository.getAllCommentsOn ---");
     const allComments = await Comment.findAll({
       where: { _postId: postId },
       order: [["createdAt", orderBy]],
     });
 
+    console.log("****** --- CommentRepository.getAllCommentsOn Returns ---");
     return allComments;
   };
 
   // commentId에 해당하는 댓글을 불러옴
   getCommentDetail = async (commentId) => {
+    console.log("****** --- CommentRepository.getCommentDetail ---");
     const thisComment = await Comment.findOne({
       where: { _id: commentId },
     });
 
+    console.log("****** --- CommentRepository.getCommentDetail Returns ---");
     return thisComment;
   };
 
   // postId에 해당하는 게시글에 새로운 댓글을 생성 (returns 생성된 댓글 정보를 반환)
   createComment = async (postId, userId, nickname, comment) => {
+    console.log("****** --- CommentRepository.createComment ---");
     const createdComment = await Comment.create({
       _postId: postId,
       userId,
@@ -33,23 +38,28 @@ class CommentRepository {
       comment,
     });
 
+    console.log("****** --- CommentRepository.createComment Returns ---");
     return createdComment;
   };
 
   // commentId에 해당하는 댓글을 새로운 댓글로 수정 (returns 수정된 댓글 정보를 반환)
   updateComment = async (commentId, comment) => {
+    console.log("****** --- CommentRepository.updateComment ---");
     const updatedComment = await Comment.update(
       { comment },
       { where: { _id: commentId } }
     );
 
+    console.log("****** --- CommentRepository.updateComment Returns---");
     return updatedComment;
   };
 
   // commentId에 해당하는 댓글을 삭제 (returns 삭제된 댓글의 정보를 반환)
   deleteComment = async (commentId) => {
+    console.log("****** --- CommentRepository.deleteComment ---");
     const deletedComment = await Comment.destroy({ where: { _id: commentId } });
 
+    console.log("****** --- CommentRepository.deleteComment Returns---");
     return deletedComment;
   };
 }

@@ -12,7 +12,7 @@ const authMiddleware = require("../middlewares/auth-middleware");
 const CommentsController = require("../controllers/comments.controller");
 const commentsController = new CommentsController();
 
-//  ---------------- 여기부터 API 시작 ----------------
+console.log("** --- Comment Router ---");
 
 // TASK 1. 댓글 작성 with POST ('/api/comments/_postId')
 router.post("/:_postId", authMiddleware, commentsController.leaveComment);
@@ -22,6 +22,8 @@ router.get("/:_postId", commentsController.getCommentsOn);
 router.put("/:_commentId", authMiddleware, commentsController.updateComment);
 // TASK 4.게시글 삭제 with DELETE ('/api/comments/_commentId')
 router.delete("/:_commentId", authMiddleware, commentsController.deleteComment);
+
+console.log("** --- Comment Router Set ---");
 
 module.exports = router;
 

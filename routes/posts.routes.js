@@ -9,6 +9,8 @@ const authMiddleware = require("../middlewares/auth-middleware"); // 유저인�
 const PostsController = require("../controllers/posts.controller"); // 컨트롤러 임포트
 const postsController = new PostsController(); // 컨트롤러 임포트
 
+console.log("** --- Post Router ---");
+
 // TASK 1 : 게시글 목록 조회 with GET ('/api/posts')
 router.get("/", postsController.getAllPosts);
 // TASK 2 : 게시글 작성 with POST ('/api/posts')
@@ -23,6 +25,8 @@ router.put("/:_postId", authMiddleware, postsController.updatePost);
 router.delete("/:_postId", authMiddleware, postsController.deletePost);
 // TASK 6 : 게시글 좋아요 누르기 ('/api/posts/:_postId/like)
 router.put("/:_postId/like", authMiddleware, postsController.likePost);
+
+console.log("** --- Post Router Set ---");
 
 // 이 파일의 router 객체를 외부에 공개합니다.
 module.exports = router;

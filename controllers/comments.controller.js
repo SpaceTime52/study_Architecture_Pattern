@@ -9,6 +9,8 @@ class CommentsController {
   commentService = new CommentService(); // Post 서비스를 클래스를 컨트롤러 클래스의 멤버 변수로 할당합니다.
 
   leaveComment = async (req, res, next) => {
+    console.log("** --- CommentsController.leaveComment ---");
+
     try {
       // 받은 변수 정리, 예외처리
       const { user } = await res.locals;
@@ -25,6 +27,7 @@ class CommentsController {
         comment
       );
 
+      console.log("** --- CommentsController.leaveComment returns ---");
       return res.status(status).send({ message });
 
       // 예외시 처리
@@ -36,6 +39,8 @@ class CommentsController {
 
   getCommentsOn = async (req, res, next) => {
     try {
+      console.log("** --- CommentsController.getCommentsOn ---");
+
       // 받은 변수 정리, 예외처리
       const { _postId } = req.params;
 
@@ -45,6 +50,7 @@ class CommentsController {
       );
 
       // 상탱와 데이터 응답
+      console.log("** --- CommentsController.getCommentsOn returns---");
       return res.status(status).json({ message, data: data });
 
       // 예외시 처리
@@ -56,6 +62,7 @@ class CommentsController {
 
   updateComment = async (req, res, next) => {
     try {
+      console.log("** --- CommentsController.updateComment ---");
       // 필요한 변수 확보 및 검증
       const { user } = await res.locals;
       const { _commentId } = req.params;
@@ -70,6 +77,7 @@ class CommentsController {
         comment
       );
 
+      console.log("** --- CommentsController.updateComment returns ---");
       return res.status(status).json({ message });
     } catch (error) {
       const message = `${req.method} ${req.originalUrl} : ${error.message}`;
@@ -79,6 +87,7 @@ class CommentsController {
 
   deleteComment = async (req, res, next) => {
     try {
+      console.log("** --- CommentsController.deleteComment ---");
       // 필요한 변수 확보 및 검증
       const { user } = await res.locals;
       const { _commentId } = req.params;
@@ -88,6 +97,7 @@ class CommentsController {
         _commentId
       );
 
+      console.log("** --- CommentsController.deleteComment returns ---");
       return res.status(status).json({ message });
 
       // 예외시 처리
