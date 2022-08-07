@@ -39,3 +39,5 @@ const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`${port} 번 포트로 연결이 완료되었습니다.`);
 });
+
+module.exports = app;
