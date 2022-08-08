@@ -1,19 +1,9 @@
-const a = {
-  username: "a",
-  password: "b",
-  database: "c",
+const createCommentReq = {
+  comment: "안녕하세요 댓글입니다.",
 };
 
-const b = {
-  username: "a",
-  password: "b",
-  database: "c",
+const updateCommentReq = {
+  comment: "수정된 댓글입니다.",
 };
 
-const c = {
-  username: "a",
-  password: "b",
-  database: "c",
-};
-
-module.exports = { a, b, c };
+module.exports = { createCommentReq, updateCommentReq };

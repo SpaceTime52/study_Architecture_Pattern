@@ -1,19 +1,11 @@
-const a = {
-  username: "a",
-  password: "b",
-  database: "c",
+const createPostReq = {
+  title: "게시글 제목입니다.",
+  content: "content 입니다.",
 };
 
-const b = {
-  username: "a",
-  password: "b",
-  database: "c",
+const updatePostReq = {
+  title: "수정된 게시글 입니다.",
+  content: "content 입니다.",
 };
 
-const c = {
-  username: "a",
-  password: "b",
-  database: "c",
-};
-
-module.exports = { a, b, c };
+module.exports = { createPostReq, updatePostReq };

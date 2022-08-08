@@ -1,19 +1,17 @@
-const a = {
-  username: "a",
-  password: "b",
-  database: "c",
+const singUpReq = {
+  nickname: "Develope",
+  password: "1234",
+  confirm: "1234",
 };
 
-const b = {
-  username: "a",
-  password: "b",
-  database: "c",
+const loginpReq = {
+  nickname: "Developer",
+  password: "1234",
 };
 
-const c = {
-  username: "a",
-  password: "b",
-  database: "c",
+const userTokenReq_Cookie = {
+  token:
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY1OTk1NDY2MH0.mJq5l_MB92xAeRawClUswYckh4vUSvccYeAgNBmYnNE",
 };
 
-module.exports = { a, b, c };
+module.exports = { singUpReq, loginpReq };

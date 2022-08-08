@@ -2,9 +2,7 @@
 
 const jwt = require("jsonwebtoken");
 // DB의 유저 모델을 참고하여 인증을 진행함
-// const { User } = require("../models");
 const UserRepository = require("../repositories/users.repository");
-
 const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 
 // 우리가 Export할 미들웨어 : authMiddleware
@@ -38,12 +36,9 @@ const authMiddleware = (req, res, next) => {
 
       // 에러없이 잘 인증 된거면, 인증된 사용자이므로 decoding 된 decode 객체가 생김
       // 이 decoded 객체로 DB로부터 사용자 정보를 빼 와서 토큰을 res.locals(전역 객체) 위치에 반환
-      // let user = await User.findOne({ where: { userId: decoded.userId } });
-
       let user = await userRepository.getUserbyId(decoded.userId);
       console.log("------ ✅  Authorization Checked ------");
       res.locals.user = user;
-
       next();
     });
 
