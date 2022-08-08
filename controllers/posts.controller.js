@@ -16,7 +16,6 @@ class PostsController {
       const posts = await this.postService.getAllPosts();
 
       console.log("** --- PostsController.getAllPosts returns ---");
-
       return res.status(200).json({ data: posts });
 
       //에러발생 시,

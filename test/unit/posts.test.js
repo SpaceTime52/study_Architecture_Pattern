@@ -1,7 +1,7 @@
 // 테스트할 User 컨트롤러, 서비스, 저장소의 각 클래스 import
-const UsersController = require("../../controllers/users.controller");
-const UsersService = require("../../services/users.service");
-const UserRepository = require("../../repositories/users.repository");
+const PostsController = require("../../controllers/posts.controller");
+const PostsService = require("../../services/posts.service");
+const PostRepository = require("../../repositories/posts.repository");
 
 // req, res, next 가상 객체를 생성해주는 모듈 import
 const httpMocks = require("node-mocks-http");
@@ -15,25 +15,25 @@ beforeEach(() => {
 });
 
 // 테스트에 필요한 Mock Data import
-const { a, b, c } = require("../data/user-data-in.js");
-const { x, y, z } = require("../data/user-data-out.js");
+const postDataIn = require("../data/post-data-in.js"); // 받아올 mock 데이터
+const postDataOut = require("../data/post-data-out.js"); // 나와야 할 mock 데이터
 
 // jest.fn() ; - 의존적인 부분을 가짜로 대체하는 mocking function 전달
 // 테스트 해볼 각종 메소드 나열
-UsersController.signUp = jest.fn();
-UsersController.login = jest.fn();
+PostsController.signUp = jest.fn();
+PostsController.login = jest.fn();
 
-UsersService.signUp = jest.fn();
-UsersService.getToken = jest.fn();
+PostsController.signUp = jest.fn();
+PostsController.getToken = jest.fn();
 
-UserRepository.getUserbyNickname = jest.fn();
-UserRepository.getUserbyId = jest.fn();
-UserRepository.getUserbyNicknamePw = jest.fn();
-UserRepository.createUser = jest.fn();
-UserRepository.getAllUsers = jest.fn();
-UserRepository.getAllLikedPosts = jest.fn();
-UserRepository.likePost = jest.fn();
-UserRepository.dislikePost = jest.fn();
+PostsController.getUserbyNickname = jest.fn();
+PostsController.getUserbyId = jest.fn();
+PostsController.getUserbyNicknamePw = jest.fn();
+PostsController.createUser = jest.fn();
+PostsController.getAllUsers = jest.fn();
+PostsController.getAllLikedPosts = jest.fn();
+PostsController.likePost = jest.fn();
+PostsController.dislikePost = jest.fn();
 
 // 회원가입 관련 테스트 그룹
 describe("User - Signup-related Test", () => {
@@ -43,7 +43,7 @@ describe("User - Signup-related Test", () => {
     // 구성
     test("사용자 컨트롤러 계층은 아래와 같이 구성되어 있어야 한다.", () => {
       console.log(req);
-      expect(UserRepository.getUserbyNicknamePw("Tester3", "12345")).toBe(
+      expect(PostsController.getUserbyNicknamePw("Tester3", "12345")).toBe(
         "정답"
       );
     });
