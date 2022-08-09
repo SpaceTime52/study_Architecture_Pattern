@@ -13,11 +13,21 @@ class CommentsController {
 
     try {
       // 받은 변수 정리, 예외처리
+      console.log(res.locals, req.params, req.body);
       const { user } = await res.locals;
       const { _postId } = req.params;
       const { comment } = req.body;
+
+      if (typeof comment !== "string") {
+        return res.status(400).json({ message: "잘못된 접근입니다." });
+      }
       if (!comment) {
-        return res.json({ message: "댓글 내용을 입력해주세요" });
+        return res.status(400).json({ message: "댓글 내용을 입력해주세요" });
+      }
+
+      if (!Number.isInteger(Number(_postId))) {
+        next();
+        return;
       }
 
       // 서비스 계층으로부터 답을 받음
@@ -67,10 +77,19 @@ class CommentsController {
       const { user } = await res.locals;
       const { _commentId } = req.params;
       const { comment } = req.body;
+
+      if (typeof comment !== "string") {
+        return res.status(400).json({ message: "잘못된 접근입니다." });
+      }
+
       if (!comment) {
         return res.status(400).json({ message: "댓글 내용을 입력해주세요" });
       }
 
+      if (!Number.isInteger(Number(_commentId))) {
+        next();
+        return;
+      }
       const { status, message } = await this.commentService.updateComment(
         user,
         _commentId,

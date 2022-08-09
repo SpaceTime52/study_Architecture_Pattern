@@ -2,6 +2,15 @@ const createCommentRes = {
   message: "댓글을 작성하였습니다.",
 };
 
+const getCommentDetailRes = {
+  commentId: 10,
+  userId: 2,
+  nickname: "Developer",
+  comment: "안녕하세요 2번째 댓글입니다.",
+  createdAt: "2022-08-04T14:47:36.000Z",
+  updatedAt: "2022-08-04T14:47:36.000Z",
+};
+
 const getCommentsRes = {
   data: [
     {
@@ -17,10 +26,51 @@ const getCommentsRes = {
       userId: 2,
       nickname: "Developer",
       comment: "안녕하세요 2번째 댓글입니다.",
+      createdAt: "2022-08-03T14:47:36.000Z",
+      updatedAt: "2022-08-03T14:47:36.000Z",
+    },
+  ],
+};
+
+const getCommentsResAscending = {
+  data: [
+    {
+      commentId: 9,
+      userId: 2,
+      nickname: "Developer",
+      comment: "안녕하세요 2번째 댓글입니다.",
+      createdAt: "2022-08-03T14:47:36.000Z",
+      updatedAt: "2022-08-03T14:47:36.000Z",
+    },
+    {
+      commentId: 10,
+      userId: 2,
+      nickname: "Developer",
+      comment: "안녕하세요 2번째 댓글입니다.",
       createdAt: "2022-08-04T14:47:36.000Z",
       updatedAt: "2022-08-04T14:47:36.000Z",
     },
   ],
+};
+
+const createdCommentRes = {
+  _postId: 5,
+  commentId: 10,
+  userId: 4,
+  nickname: "Tester5",
+  comment: "안녕하세요 댓글입니다.",
+  createdAt: "2022-08-04T14:47:36.000Z",
+  updatedAt: "2022-08-04T14:47:36.000Z",
+};
+
+const deletedCommentRes = {
+  _postId: 6,
+  commentId: 11,
+  userId: 4,
+  nickname: "Tester5",
+  comment: "안녕하세요 삭제할 댓글입니다.",
+  createdAt: "2022-08-04T14:47:36.000Z",
+  updatedAt: "2022-08-04T14:47:36.000Z",
 };
 
 const updateCommentRes = {
@@ -36,4 +86,8 @@ module.exports = {
   getCommentsRes,
   updateCommentRes,
   deleteCommentRes,
+  createdCommentRes,
+  deletedCommentRes,
+  getCommentDetailRes,
+  getCommentsResAscending,
 };

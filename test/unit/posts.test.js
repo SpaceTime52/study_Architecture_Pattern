@@ -57,7 +57,7 @@ describe("PostsController의 클래스의 테스트", () => {
     });
 
     it("기능: 받아온 데이터를 받아 메세지만 전달받아 응답하고, 201번의 status-code를 응답해야 한다.", async () => {
-      res.body = postDataIn.updatePostReq; // bodt, params 에 모두 정상적인 데이터가 들어왔을 때,
+      req.body = postDataIn.updatePostReq; // bodt, params 에 모두 정상적인 데이터가 들어왔을 때,
       req.params._postId = "3";
       await postsController.updatePost(req, res, next);
       expect(res.statusCode).toBe(201);
@@ -66,7 +66,7 @@ describe("PostsController의 클래스의 테스트", () => {
 
     it("예외처리: _postId 에 담겨 들어온 데이터가 숫자가 아니면,다음 경로를 검토하도록 흘려보낸다.", async () => {
       req.params._postId = "like"; // params 에 이상한 데이터가 들어옴
-      res.body = postDataIn.updatePostReq; // 바디엔 정상적인 데이터가 들어옴
+      req.body = postDataIn.updatePostReq; // 바디엔 정상적인 데이터가 들어옴
       await postsController.updatePost(req, res, next);
       // next가 1번 불러지고, 그 뒤의 서비스 메소드는 불러와지지 않아야 한다.
       expect(next.mock.calls.length).toBe(1);
@@ -75,7 +75,7 @@ describe("PostsController의 클래스의 테스트", () => {
 
     it("예외처리: body에 담겨 들어온 title, content 가 이상하면, 에러메세지를 띄워 리턴한다.그때 400번의 에러메세지를 응답해야 한다.", async () => {
       req.params._postId = "3"; // params 에 정상적인 데이터가 들어옴
-      res.body = 3; // 바디에 비정상적인 데이터가 들어옴
+      req.body = 3; // 바디에 비정상적인 데이터가 들어옴
 
       postsController.postService.updatePost.mockImplementation(() => {
         throw new Error("게시글을 수정할 수 없습니다.");
