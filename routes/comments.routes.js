@@ -6,7 +6,9 @@ const express = require("express");
 const router = express.Router();
 
 // 각 api 접근할 때마다 사용자 인증을 위한 미들웨어 임포트
-const authMiddleware = require("../middlewares/auth-middleware");
+const Auth = require("../middlewares/auth-middleware"); // 유저인증
+const auth = new Auth();
+const authMiddleware = auth.authMiddleware; // 유저인증 미들웨어 임포트
 
 // 컨트롤러 연결
 const CommentsController = require("../controllers/comments.controller");

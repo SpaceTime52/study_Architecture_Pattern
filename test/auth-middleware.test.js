@@ -1,6 +1,6 @@
 // 검증할 모듈 import
-const authMiddleware = require("../middlewares/auth-middleware");
-
+const Auth = require("../middlewares/auth-middleware");
+const auth = new Auth();
 // 필요한 내부 모듈과 DataSet import
 const UserRepository = require("../repositories/users.repository");
 const userRepository = new UserRepository();
@@ -20,36 +20,47 @@ beforeEach(() => {
   res = httpMocks.createResponse(); // 빈 리스폰스 객체 생성
   next = jest.fn(); // mocking 함수로 정의
 
-  UserRepository.getUserbyId = jest.fn();
+  auth.userRepository.getUserbyId = jest.fn();
+  auth.userRepository.getUserbyId.mockReturnValue(
+    userDataIn.mockUser_ResLocals
+  );
 });
 
 describe("AuthMiddleware _ 기능 검증 Group", () => {
-  test("유효한 토큰을 전달했을 때 res.locals에 user 정보 기록", () => {
-    req.cookies.token = userDataIn.userReq_Cookie.token;
-    authMiddleware(req, res, next);
-    expect(true).toHaveBeenCalledTimes(true);
+  test("유효한 토큰을 전달했을 때 res.locals에 user 정보 기록", async () => {
+    req.cookies.token = userDataIn.userReq_Cookie.token; // 유효한 토큰을 request에 넣어 전달
+    await auth.authMiddleware(req, res, next);
+    expect(res.locals.user).toHaveProperty("userId");
+    expect(res.locals.user).toHaveProperty("nickname");
+    expect(res.locals.user).toHaveProperty("password");
   });
 });
 
 // 회원가입 과정에서 저장소 관련 테스트 그룹
 describe("AuthMiddleware _ 예외처리 검증 Group", () => {
-  test("Bearer로 시작하지 않는 토큰에 에러.", () => {
-    expect(true).toBe(true);
+  test("Bearer로 시작하지 않는 토큰에 에러.", async () => {
+    req.cookies.token =
+      "Nothing eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY2MDA0OTgyNH0.lAHIM-gJVT9MEeMkM60n6gMPbTwOXA3rVPbcQVjRGaw"; // Bearer로 시작하지 않는 토큰을 request에 넣어 전달
+    await auth.authMiddleware(req, res, next);
+    expect(res.statusCode).toBe(401);
   });
 
-  test("payload가 없거나 비어 있는 토큰 반려.", () => {
-    expect(true).toBe(true);
+  test("payload가 없거나 비어 있는 등 무효한 토큰 반려.", async () => {
+    req.cookies.token =
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.NoPayLoad.lAHIM-gJVT9MEeMkM60n6gMPbTwOXA3rVPbcQVjRGaw"; // 페이로드를 조작해서 넣어 전달
+    await auth.authMiddleware(req, res, next);
+    expect(res.statusCode).toBe(401);
   });
 
-  test("무효한 토큰 반려.", () => {
-    expect(true).toBe(true);
+  test("시간이 지난 토큰 반려.", async () => {
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY2MDA0OTgyNH0.lAHIM-gJVT9MEeMkM60n6gMPbTwOXA3rVPbcQVjRGaw"; // 만료된 토큰을 request에 넣어 전달
+    await auth.authMiddleware(req, res, next);
+    expect(res.statusCode).toBe(401);
   });
 
-  test("시간이 지난 토큰 반려.", () => {
-    expect(true).toBe(true);
-  });
-
-  test("토큰이 빈 문자열일 때.", () => {
-    expect(true).toBe(true);
+  test("payload가 없거나 비어 있는 등 무효한 토큰 반려.", async () => {
+    req.cookies.token = ""; // 페이로드를 조작해서 넣어 전달
+    await auth.authMiddleware(req, res, next);
+    expect(res.statusCode).toBe(401);
   });
 });

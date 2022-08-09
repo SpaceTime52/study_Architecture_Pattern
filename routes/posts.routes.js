@@ -5,7 +5,10 @@
 const express = require("express");
 const router = express.Router();
 
-const authMiddleware = require("../middlewares/auth-middleware"); // 유저인증 미들웨어 임포트
+//미들웨어 임포트
+const Auth = require("../middlewares/auth-middleware"); // 유저인증
+const auth = new Auth();
+const authMiddleware = auth.authMiddleware; // 유저인증 미들웨어 임포트
 const PostsController = require("../controllers/posts.controller"); // 컨트롤러 임포트
 const postsController = new PostsController(); // 컨트롤러 임포트
 
