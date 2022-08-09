@@ -112,7 +112,7 @@ class PostService {
     if (!thisPost) {
       console.log("**** --- PostService.likePost Reutrns ---");
       return { status: 400, message: "해당 게시글이 없습니다." };
-    } else if (!postIdsUserLiked.includes(thisPost._id.toString())) {
+    } else if (!postIdsUserLiked.includes(postId.toString())) {
       await this.postRepository.likePost(postId);
       await this.userRepository.likePost(user.userId, postId);
       console.log("**** --- PostService.likePost Reutrns ---");

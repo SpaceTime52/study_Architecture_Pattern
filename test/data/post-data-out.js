@@ -24,12 +24,73 @@ const getPostsRes = {
     },
   ],
 };
+const getPostsResAscending = {
+  data: [
+    {
+      postId: 7,
+      userId: 2,
+      nickname: "Developer",
+      title: "안녕하세요 2번째 게시글 제목입니다.",
+      createdAt: "2022-08-03T20:55:18.000Z",
+      updatedAt: "2022-08-03T20:55:18.000Z",
+      likes: 1,
+    },
+    {
+      postId: 8,
+      userId: 2,
+      nickname: "Developer",
+      title: "안녕하세요 2번째 게시글 제목입니다.",
+      createdAt: "2022-08-04T14:45:40.000Z",
+      updatedAt: "2022-08-04T14:45:40.000Z",
+      likes: 0,
+    },
+  ],
+};
 
 const getPostDetailRes = {
   data: {
     postId: 8,
-    userId: 2,
-    nickname: "Developer",
+    userId: 4,
+    nickname: "Tester3",
+    title: "안녕하세요 2번째 게시글 제목입니다.",
+    content: "안녕하세요 content 입니다.",
+    createdAt: "2022-08-04T14:45:40.000Z",
+    updatedAt: "2022-08-04T14:45:40.000Z",
+    likes: 0,
+  },
+};
+
+const createdPostRes = {
+  data: {
+    postId: 9,
+    userId: 5,
+    nickname: "Tester4",
+    title: "새로생성한 글의 제목",
+    content: "안녕하세요 새로 생성한 글의 content 입니다.",
+    createdAt: "2022-08-04T14:45:40.000Z",
+    updatedAt: "2022-08-04T14:45:40.000Z",
+    likes: 0,
+  },
+};
+
+const updatedPostRes = {
+  data: {
+    postId: 9,
+    userId: 5,
+    nickname: "Tester4",
+    title: "수정한 글의 제목",
+    content: "안녕하세요 수정한 글의 content 입니다.",
+    createdAt: "2022-08-04T14:45:40.000Z",
+    updatedAt: "2022-08-04T14:45:40.000Z",
+    likes: 0,
+  },
+};
+
+const getPostDetailRes_otherWriter = {
+  data: {
+    postId: 8,
+    userId: 5,
+    nickname: "Tester4",
     title: "안녕하세요 2번째 게시글 제목입니다.",
     content: "안녕하세요 content 입니다.",
     createdAt: "2022-08-04T14:45:40.000Z",
@@ -79,10 +140,14 @@ const dislikePostRes = {
 module.exports = {
   createPostRes,
   getPostsRes,
+  getPostsResAscending,
   getPostDetailRes,
+  getPostDetailRes_otherWriter,
   updatePostRes,
   deletePostRes,
   getlikedPostsRes,
   likePostRes,
   dislikePostRes,
+  createdPostRes,
+  updatedPostRes,
 };

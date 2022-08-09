@@ -32,8 +32,6 @@ class PostRepository {
     const allPostsUserLiked = await Post.findAll({
       where: { _id: likedArray },
       order: [["likes", "DESC"]],
-    }).then((e) => {
-      return e;
     });
 
     console.log("****** --- PostRepository.getPostsByLikedArray Returns---");

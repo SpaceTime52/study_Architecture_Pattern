@@ -76,7 +76,7 @@ class PostsController {
 
       if (!Number.isInteger(Number(_postId))) {
         next();
-        // return;
+        return;
       }
 
       const { status, message } = await this.postService.updatePost(
@@ -92,7 +92,7 @@ class PostsController {
       //에러발생 시,
     } catch (error) {
       const message = `${req.method} ${req.originalUrl} : ${error.message}`;
-      return res.status(400).send({ message });
+      return res.status(400).json({ message });
     }
   };
 
@@ -102,6 +102,10 @@ class PostsController {
       const { user } = await res.locals;
       const { _postId } = req.params;
 
+      if (!Number.isInteger(Number(_postId))) {
+        next();
+        return;
+      }
       const { status, message } = await this.postService.deletePost(
         user,
         _postId
@@ -123,6 +127,10 @@ class PostsController {
       // 변수 정의
       const { user } = await res.locals;
       const { _postId } = req.params;
+      if (!Number.isInteger(Number(_postId))) {
+        next();
+        return;
+      }
 
       // 좋아요 눌렀을 때 서비스 계층으로부터 결과값 받아옴
       const { status, message } = await this.postService.likePost(
