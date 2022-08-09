@@ -9,9 +9,18 @@ const loginpReq = {
   password: "1234",
 };
 
-const userTokenReq_Cookie = {
+const userReq_Cookie = {
   token:
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY1OTk1NDY2MH0.mJq5l_MB92xAeRawClUswYckh4vUSvccYeAgNBmYnNE",
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY1OTk2MzA1NH0.XFjC5KhSJ-K-3XwjvyOTdmMu5k5Fe3GDqaCOfOezrAo",
 };
 
-module.exports = { singUpReq, loginpReq };
+const mockUser_ResLocals = {
+  userId: 3,
+  nickname: "Tester3",
+  password: "12345",
+  likedPosts: [],
+  createdAt: new Date("2022-08-06T04:14:16.000Z"),
+  updatedAt: new Date("2022-08-07T05:05:33.000Z"),
+};
+
+module.exports = { singUpReq, loginpReq, userReq_Cookie, mockUser_ResLocals };

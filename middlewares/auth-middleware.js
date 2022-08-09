@@ -30,6 +30,7 @@ const authMiddleware = (req, res, next) => {
         res.status(401).send({
           errorMessage: "이용에 문제가 있습니다. 관리자에게 문의해주세요.",
         });
+
         console.error(error);
         return;
       }

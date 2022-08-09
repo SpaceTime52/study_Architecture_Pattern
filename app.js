@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 // DB에 연결 - sync() 사용으로 DB 모델(./models)의 변화를 감지하여 동기화
+
 const { sequelize } = require("./models");
 sequelize
   .sync({ force: false })

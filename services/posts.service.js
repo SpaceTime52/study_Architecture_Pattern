@@ -82,7 +82,7 @@ class PostService {
       return { status: 400, message: "수정 권한이 없습니다." };
     } else {
       await this.postRepository.updatePost(postId, title, content);
-      return { status: 200, message: "게시글을 수정하였습니다." };
+      return { status: 201, message: "게시글을 수정하였습니다." };
     }
   };
   // TASK 5 : 게시글 삭제

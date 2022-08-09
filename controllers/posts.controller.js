@@ -28,6 +28,7 @@ class PostsController {
   createNewPost = async (req, res, next) => {
     try {
       console.log("** --- PostsController.createNewPost ---");
+
       const { user } = await res.locals;
       const { title, content } = req.body;
       // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
@@ -38,7 +39,7 @@ class PostsController {
         content
       );
       console.log("** --- PostsController.createNewPost Returns ---");
-      return res.status(200).json({ message });
+      return res.status(201).json({ message });
 
       //에러발생 시,
     } catch (error) {
@@ -51,6 +52,11 @@ class PostsController {
     try {
       console.log("** --- PostsController.getPostDetail ---");
       const { _postId } = req.params;
+
+      if (!Number.isInteger(Number(_postId))) {
+        next();
+        return;
+      }
       const data = await this.postService.getPostDetail(_postId);
       console.log("** --- PostsController.getPostDetail Returns ---");
       return res.status(200).json({ data: data });
@@ -67,6 +73,11 @@ class PostsController {
       const { user } = await res.locals;
       const { _postId } = req.params;
       const { title, content } = req.body;
+
+      if (!Number.isInteger(Number(_postId))) {
+        next();
+        // return;
+      }
 
       const { status, message } = await this.postService.updatePost(
         user,
