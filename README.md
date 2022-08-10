@@ -1,6 +1,28 @@
-# nodejs로 간단한 api를 구현하는 것을 해보았습니다.
+# nodejs API practice 
 
-본 api는 [http://nodeapi.myspaceti.me:8000/api](http://nodeapi.myspaceti.me:8000/api) 에서 아래와 같은 명세로 작동합니다. (https 아님 주의)
+* 본 api는 [http://nodeapi.myspaceti.me:8001/api](http://nodeapi.myspaceti.me:8001/api) 에서 아래와 같은 명세로 작동합니다. (https 아님 주의)
+* nodejs로 구현한 API를 3tier Layered Architecture로 구성했습니다. 
+* 개발 순서상 TDD로 구현하지는 않았지만, Jest 기반 테스트 코드를 연습하기위해 77개의 테스트코드를 작성했습니다.
+
+----
+
+* 적용 순서
+``` bash
+
+git clone https://github.com/SpaceTime52/study_Architecture_Pattern.git
+cd study_Architecture_Pattern
+npm install
+
+.env 생성 
+
+```
+
+
+## ERD : Entity Relationship Diagram
+
+![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/08c62cea-a311-4ef0-9579-5e2fe16def2c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220805%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220805T010127Z&X-Amz-Expires=86400&X-Amz-Signature=a98404c2aaf18bb4ddfedc2ef0ed5b15e648fb3f3129635bff494db538294cfc&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
+
 
 | 기능               | API URL                 | Method | request(가져 갈 데이터)                                                                 | response(서버로부터 받아올 데이터)                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------ | ----------------------- | ------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -18,6 +40,4 @@
 | 좋아요 게시글 조회 | /api/posts/like         | GET    | -                                                                                       | { "data": [ { "postId": 4, "userId": 1, "nickname": "Developer", "title": "안녕하세요 4번째 게시글 제목입니다.", "createdAt": "2022-07-25T07:58:39.000Z", "updatedAt": "2022-07-25T07:58:39.000Z", "likes": 1 } ]}                                                                                                                                                                                                |
 | 게시글 좋아요      | /api/posts/:postId/like | PUT    | -                                                                                       | { "message": "게시글의 좋아요를 등록하였습니다."},{ "message": "게시글의 좋아요를 취소하였습니다."}                                                                                                                                                                                                                                                                                                               |
 
-## ERD : Entity Relationship Diagram
 
-![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/08c62cea-a311-4ef0-9579-5e2fe16def2c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220805%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220805T010127Z&X-Amz-Expires=86400&X-Amz-Signature=a98404c2aaf18bb4ddfedc2ef0ed5b15e648fb3f3129635bff494db538294cfc&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
