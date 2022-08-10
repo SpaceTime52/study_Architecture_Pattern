@@ -5,22 +5,33 @@
 const UserService = require("../services/users.service");
 const Joi = require("joi");
 
-const signupSchema = Joi.object({
-  nickname: Joi.string().min(3).max(30).alphanum().required(),
-  // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)
-  password: Joi.string().min(4).max(30).alphanum().required(),
-  // 최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패 (API에서 검토)
-  confirm: Joi.string().min(4).max(30).alphanum().required(),
-});
-// 로그인 할 떄 user 입력된 정보에 대한 joi 객체
-const loginSchema = Joi.object({
-  nickname: Joi.string().min(3).max(30).alphanum().required(),
-  password: Joi.string().min(4).max(30).required(),
-});
+// const signupSchema = Joi.object({
+//   nickname: Joi.string().min(3).max(30).alphanum().required(),
+//   // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)
+//   password: Joi.string().min(4).max(30).alphanum().required(),
+//   // 최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패 (API에서 검토)
+//   confirm: Joi.string().min(4).max(30).alphanum().required(),
+// });
+// // 로그인 할 떄 user 입력된 정보에 대한 joi 객체
+// const loginSchema = Joi.object({
+//   nickname: Joi.string().min(3).max(30).alphanum().required(),
+//   password: Joi.string().min(4).max(30).required(),
+// });
 
 // Post의 컨트롤러(Controller)역할을 하는 클래스
 class UsersController {
   userService = new UserService();
+  signupSchema = Joi.object({
+    nickname: Joi.string().min(3).max(30).alphanum().required(),
+    // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)
+    password: Joi.string().min(4).max(30).alphanum().required(),
+    // 최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패 (API에서 검토)
+    confirm: Joi.string().min(4).max(30).alphanum().required(),
+  });
+  loginSchema = Joi.object({
+    nickname: Joi.string().min(3).max(30).alphanum().required(),
+    password: Joi.string().min(4).max(30).required(),
+  });
 
   // 어떤 요청에 대해서는 회원가입 진행 후 메세지를 반환합니다.
   signUp = async (req, res) => {
@@ -28,9 +39,8 @@ class UsersController {
       console.log("** --- UsersController.signUp ---");
 
       // joi 객체의 스키마를 잘 통과했는지 확인
-      const { nickname, password, confirm } = await signupSchema.validateAsync(
-        req.body
-      );
+      const { nickname, password, confirm } =
+        await this.signupSchema.validateAsync(req.body);
 
       // 헤더가 인증정보를 가지고 있으면 (로그인 되어 있으면,)
       if (req.cookies.token) {
@@ -85,7 +95,9 @@ class UsersController {
     try {
       console.log("** --- UsersController.login ---");
       // joi 객체의 스키마를 잘 통과했는지 확인
-      const { nickname, password } = await loginSchema.validateAsync(req.body);
+      const { nickname, password } = await this.loginSchema.validateAsync(
+        req.body
+      );
 
       // 헤더가 인증정보를 가지고 있으면 (로그인 되어 있으면,) 반려
       if (req.cookies.token) {
