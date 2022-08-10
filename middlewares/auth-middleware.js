@@ -17,6 +17,8 @@ class Auth {
       const authorization = req.cookies.token;
       const [authType, authToken] = (authorization || "").split(" ");
 
+      console.log("authorization", authorization);
+
       // 전달받은 인증값이 Bearer로 시작하지 않으면 인증 실패
       if (authType !== "Bearer") {
         res.status(401).send({

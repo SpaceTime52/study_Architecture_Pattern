@@ -30,6 +30,8 @@ class PostsController {
       console.log("** --- PostsController.createNewPost ---");
 
       const { user } = await res.locals;
+
+      console.log(user);
       const { title, content } = req.body;
       // 서비스 계층에 구현된 findAllPost 로직을 실행합니다.
 
@@ -44,6 +46,7 @@ class PostsController {
       //에러발생 시,
     } catch (error) {
       const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      console.log(message);
       return res.status(400).send({ message });
     }
   };

@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       nickname: DataTypes.STRING,
       title: DataTypes.STRING,
       content: DataTypes.STRING,
-      likes: DataTypes.INTEGER,
+      likes: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,

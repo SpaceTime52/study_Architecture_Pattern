@@ -10,7 +10,7 @@ const userDataOut = require("../data/user-data-out.js"); // 나와야 할 mock �
 beforeAll(async () => {
   await sequelize.sync();
 });
-describe("/api/signup", () => {
+describe("POST /api/signup", () => {
   test("모두 기입 시 회원가입 수행", async () => {
     const response = await request(app)
       .post("/api/signup")
@@ -65,12 +65,11 @@ describe("/api/signup", () => {
   });
 });
 
-describe("/api/login", () => {
+describe("POST /api/login", () => {
   beforeEach(async () => {
     // login 과정에서 사용할 로그인할 유저의 정보를 db에 미리 담아둠 (매번 초기화되기 때문에)
     await request(app).post("/api/signup").send(userDataIn.signUpReq);
   });
-
   test("모두 정상 기입 시 로그인 수행 (응답코드와 쿠키 확인)", async () => {
     const response = await request(app)
       .post("/api/login")

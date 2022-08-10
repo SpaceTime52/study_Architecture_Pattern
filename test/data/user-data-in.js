@@ -23,9 +23,35 @@ const mockUser_ResLocals = {
   updatedAt: new Date("2022-08-07T05:05:33.000Z"),
 };
 
+const signUpReq1 = {
+  nickname: "Tester1",
+  password: "12345",
+  confirm: "12345",
+};
+
+const loginpReq1 = {
+  nickname: "Tester1",
+  password: "12345",
+};
+
+const signUpReq3 = {
+  nickname: "Tester3",
+  password: "12345",
+  confirm: "12345",
+};
+
+const loginpReq3 = {
+  nickname: "Tester3",
+  password: "12345",
+};
+
 module.exports = {
   signUpReq,
   loginpReq,
   userReq_Cookie,
   mockUser_ResLocals,
+  signUpReq1,
+  loginpReq1,
+  signUpReq3,
+  loginpReq3,
 };

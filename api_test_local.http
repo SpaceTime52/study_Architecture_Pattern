@@ -34,7 +34,7 @@ Content-Type: application/json
 }
     
     
-### 게시글 모두 조회 불러오는 (주소창)
+### 게시글 모두 조회 
 GET http://localhost:8001/api/posts
 
 ### 특정 게시글 상세 조회
