@@ -1,13 +1,118 @@
-const app = require("../../app"); // 서버
 const request = require("supertest"); // http 요청을 보낼 수 있는 라이브러리
+const app = require("../../app"); // 서버
+const { sequelize } = require("../../models");
+const { User } = require("../../models");
+
 const userDataIn = require("../data/user-data-in.js"); // 받아올 mock 데이터
 const userDataOut = require("../data/user-data-out.js"); // 나와야 할 mock 데이터
 
 // 예시 코드
-test("POST /api/posts", async () => {
-  // userIntData의 a를 넣었을 때 나오는 response
-  const response = await request(app).post("/api/posts").send(userIntDataIn.a);
-  expect(response.statusCode).toBe(200);
-  expect(response.body.name).toBe(userIntDataOut.name);
-  expect(response.body.description).toBe(userIntDataOut.description);
+beforeAll(async () => {
+  await sequelize.sync();
+});
+
+describe("/api/signup", () => {
+  test("모두 기입 시 회원가입 수행", async () => {
+    const response = await request(app)
+      .post("/api/signup")
+      .send(userDataIn.signUpReq);
+    expect(response.statusCode).toBe(200);
+
+    // db에 잘 들어갔는지 확인
+    const userInfo = await User.findOne({
+      where: { nickname: userDataIn.signUpReq.nickname },
+    });
+
+    console.log(userInfo);
+    expect(userInfo).toBeTruthy();
+  });
+  test("잘못기입 시 (짧은 패스워드) 회원가입 반려", async () => {
+    const response = await request(app).post("/api/signup").send({
+      nickname: "Tester10",
+      password: "12",
+      confirm: "12",
+    });
+    expect(response.statusCode).toBe(400);
+  });
+  test("잘못기입 시 (서로 다른 패스워드) 회원가입 반려", async () => {
+    const response = await request(app).post("/api/signup").send({
+      nickname: "Tester10",
+      password: "12345",
+      confirm: "123456",
+    });
+    expect(response.statusCode).toBe(400);
+  });
+  test("쿠키가 존재하는 경우(이미 로그인 된 경우) 반려", async () => {
+    const response = await request(app)
+      .post("/api/signup")
+      .set(
+        "Cookie",
+        `token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY1OTk2MzA1NH0.XFjC5KhSJ-K-3XwjvyOTdmMu5k5Fe3GDqaCOfOezrAo"`
+      )
+      .send({
+        nickname: "Tester10",
+        password: "12345",
+        confirm: "12345",
+      });
+    expect(response.statusCode).toBe(400);
+  });
+  test("비밀번호가 닉네임을 포함할 경우 반려", async () => {
+    const response = await request(app).post("/api/signup").send({
+      nickname: "Tester10",
+      password: "Tester1027",
+      confirm: "Tester1027",
+    });
+    expect(response.statusCode).toBe(400);
+  });
+});
+describe("/api/login", () => {
+  test("모두 기입 시 회원가입 수행", async () => {
+    const response = await request(app)
+      .post("/api/login")
+      .send(userDataIn.loginpReq);
+    expect(response.statusCode).toBe(200);
+  });
+  test("잘못기입 시 (짧은 패스워드) 회원가입 반려", async () => {
+    const response = await request(app).post("/api/signup").send({
+      nickname: "Tester10",
+      password: "12",
+      confirm: "12",
+    });
+    expect(response.statusCode).toBe(400);
+  });
+  test("잘못기입 시 (서로 다른 패스워드) 회원가입 반려", async () => {
+    const response = await request(app).post("/api/signup").send({
+      nickname: "Tester10",
+      password: "12345",
+      confirm: "123456",
+    });
+    expect(response.statusCode).toBe(400);
+  });
+  test("쿠키가 존재하는 경우(이미 로그인 된 경우) 반려", async () => {
+    const response = await request(app)
+      .post("/api/signup")
+      .set(
+        "Cookie",
+        `token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY1OTk2MzA1NH0.XFjC5KhSJ-K-3XwjvyOTdmMu5k5Fe3GDqaCOfOezrAo"`
+      )
+      .send({
+        nickname: "Tester10",
+        password: "12345",
+        confirm: "12345",
+      });
+    expect(response.statusCode).toBe(400);
+  });
+  test("비밀번호가 닉네임을 포함할 경우 반려", async () => {
+    const response = await request(app).post("/api/signup").send({
+      nickname: "Tester10",
+      password: "Tester1027",
+      confirm: "Tester1027",
+    });
+    expect(response.statusCode).toBe(400);
+  });
+});
+
+// 테스트가 끝난 후 데이터베이스 강제 초기화
+afterAll(async () => {
+  await sequelize.sync({ force: true });
 });

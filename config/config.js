@@ -24,11 +24,12 @@ const production = {
 };
 
 const test = {
-  username: process.env.MYSQL_USERNAME,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE_TEST,
-  host: process.env.MYSQL_HOST,
+  username: process.env.TEST_MYSQL_USERNAME,
+  password: process.env.TEST_MYSQL_PASSWORD,
+  database: process.env.TEST_MYSQL_DATABASE,
+  host: process.env.TEST_MYSQL_HOST,
   dialect: "mysql",
+  logging: false,
 };
 
 module.exports = { development, production, test };

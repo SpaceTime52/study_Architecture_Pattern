@@ -1,12 +1,12 @@
-const singUpReq = {
-  nickname: "Develope",
-  password: "1234",
-  confirm: "1234",
+const signUpReq = {
+  nickname: "Tester10",
+  password: "12345",
+  confirm: "12345",
 };
 
 const loginpReq = {
-  nickname: "Developer",
-  password: "1234",
+  nickname: "Tester10",
+  password: "12345",
 };
 
 const userReq_Cookie = {
@@ -23,4 +23,9 @@ const mockUser_ResLocals = {
   updatedAt: new Date("2022-08-07T05:05:33.000Z"),
 };
 
-module.exports = { singUpReq, loginpReq, userReq_Cookie, mockUser_ResLocals };
+module.exports = {
+  signUpReq,
+  loginpReq,
+  userReq_Cookie,
+  mockUser_ResLocals,
+};

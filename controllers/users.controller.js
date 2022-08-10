@@ -34,6 +34,7 @@ class UsersController {
 
       // 헤더가 인증정보를 가지고 있으면 (로그인 되어 있으면,)
       if (req.cookies.token) {
+        console.log("이미 로그인이 되어있습니다.");
         res.status(400).send({
           errorMessage: "이미 로그인이 되어있습니다.",
         });
@@ -43,6 +44,7 @@ class UsersController {
       // ---- 추가적인 유효성 검사 (validation) ------
       // 입력된 패스워드 2개가 같은지 확인
       if (password !== confirm) {
+        console.log("입력하신 두개의 비밀번호가 다릅니다");
         res.status(400).send({
           errorMessage: "입력하신 두개의 비밀번호가 다릅니다",
         });
@@ -51,6 +53,7 @@ class UsersController {
 
       // 패스워드가 닉네임을 포함하는지 확인
       if (password.includes(nickname)) {
+        console.log("비밀번호는 닉네임을 포함할 수 없습니다.");
         return res.status(400).send({
           errorMessage: "비밀번호는 닉네임을 포함할 수 없습니다. ",
         });
@@ -71,8 +74,9 @@ class UsersController {
       }
     } catch (error) {
       const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+      console.log(message + "입력하신 아이디와 패스워드를 확인해주세요.");
       res.status(400).send({
-        errorMessage: "입력하신 아이디와 패스워드를 확인해주세요.",
+        errorMessage: message + "입력하신 아이디와 패스워드를 확인해주세요.",
       });
     }
   };
