@@ -12,8 +12,14 @@
 git clone https://github.com/SpaceTime52/study_Architecture_Pattern.git
 cd study_Architecture_Pattern
 npm install
+## .env 생성하셔야 합니다. 
 
-.env 생성 
+## 서버 실행 : 둘 중 하나를 사용하시면 됩니다. 
+npm start
+(또는) node server.js
+
+## 단위 및 통합 테스트 
+npm test
 
 ```
 
