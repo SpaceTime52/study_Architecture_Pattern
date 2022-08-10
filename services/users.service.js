@@ -1,11 +1,16 @@
-// 컨트롤러에서 사용할 서비스 클래스와 그 안의 메소드를 정의
-// 그 과정에서, 다시 각 메소드가 사용할 저장소 클래스를 필요로 함(require)
+// 서비스 레벨에서는 비즈니스 로직을 수행, 데이터를 요청하여 각 케이스별 요구사항 구현, 프레젠테이션 계층과 저장소 계층이 직접 통신하지 않게 함
 
-const jwt = require("jsonwebtoken");
+// 이 파일에서는 유저 컨트롤러에서 사용할 서비스 클래스와 그 안의 메소드를 정의
+// 그 과정에서, 다시 각 메소드가 사용할 저장소 클래스를 필요로 함(require)
 const UserRepository = require("../repositories/users.repository");
+
+// 그 외에 필요한 외부 모듈과 환경 변수를 선언
+const jwt = require("jsonwebtoken");
 const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 
+// 유저관련 서비스 클래스
 class UserService {
+  // 클래스 안에서 활용할 인스턴스를 확보
   userRepository = new UserRepository();
 
   // 검증이 완료된 nickname과 password를 받아, 기존 유저가 없으면
@@ -56,10 +61,3 @@ class UserService {
 }
 
 module.exports = UserService;
-
-/* 서비스 레벨에서는 비즈니스 로직을 수행, 데이터를 요청하여 각 케이스별 요구사항 구현, 프레젠테이션 계층과 저장소 계층이 직접 통신하지 않게 함
-
-    - API 뒤에 이렇게 로직을 감췄기 때문에 서비스 계층의 코드를 자유롭게 리팩터링할 수 있습니다. : 뭔말임?
-    - 사용자의 요구사항을 처리 : 현업에서는 서비스 코드의 역할이 많아짐 
-    
-*/

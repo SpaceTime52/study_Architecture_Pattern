@@ -23,6 +23,7 @@ const production = {
   dialect: "mysql",
 };
 
+// 테스트 시에는 여기를 지납니다.
 const test = {
   username: process.env.TEST_MYSQL_USERNAME,
   password: process.env.TEST_MYSQL_PASSWORD,

@@ -9,10 +9,10 @@ const router = express.Router();
 console.log("--- API Router ---");
 
 const postsRouter = require("./posts.routes.js");
-router.use("/posts", [postsRouter]);
+router.use("/posts", [postsRouter]); // 게시글 관련 라우터
 
 const commentsRouter = require("./comments.routes.js");
-router.use("/comments", [commentsRouter]);
+router.use("/comments", [commentsRouter]); // 댓글 관련 라우터
 
 const usersRouter = require("./users.routes.js");
 router.use("/", [usersRouter]); // 회원가입이랑 로그인 도와주는 애

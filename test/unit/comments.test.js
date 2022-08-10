@@ -26,7 +26,7 @@ let req, res, next;
 beforeEach(() => {
   req = httpMocks.createRequest(); // 빈 리퀘스트 객체 생성
   res = httpMocks.createResponse(); // 빈 리스폰스 객체 생성
-  next = jest.fn();
+  next = jest.fn(); // mock 함수로 선언
 });
 
 describe("commentsController의 클래스의 테스트", () => {
@@ -298,30 +298,3 @@ describe("CommentRepository 클래스의 메소드 테스트", () => {
     });
   });
 });
-
-// 사용 가능 메소드
-
-// commentsController.getAllPosts
-// commentsController.updatePost
-// commentsController.createNewPost
-// commentsController.getPostDetail
-// commentsController.deletePost
-// commentsController.likePost
-// commentsController.listMyLikedPosts
-
-// commentsService.getAllPosts
-// commentsService.updatePost
-// commentsService.likePost
-// commentsService.listMyLikedPosts
-// commentsService.createNewPost
-// commentsService.getPostDetail
-// commentsService.deletePost
-
-// commentRepository.deletePost
-// commentRepository.getPost
-// commentRepository.getAllPosts
-// commentRepository.getPostsByLikedArray
-// commentRepository.createNewPost
-// commentRepository.updatePost
-// commentRepository.likePost
-// commentRepository.dislikePost

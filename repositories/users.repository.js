@@ -4,10 +4,12 @@
 // 필요한 시퀄라이즈 모델을 확보합니다.
 const { User } = require("../models");
 
+// 저장소 클래스를 선언합니다.
 class UserRepository {
-  // nickname에 해당하는 1명의 유저를 찾는다.
+  // nickname에 해당하는 1명의 유저를 찾아 리턴한다.
   getUserbyNickname = async (nickname) => {
     console.log("****** --- UserRepository.getUserbyNickname ---");
+
     const userInfo = await User.findOne({
       where: { nickname },
     });
@@ -16,40 +18,41 @@ class UserRepository {
     return userInfo;
   };
 
-  // userId에 해당하는 1명의 유저를 찾는다.
+  // userId에 해당하는 1명의 유저를 찾아 리턴한다.
   getUserbyId = async (userId) => {
     console.log("****** --- UserRepository.getUserbyId ---");
 
+    // 찾아서
     const userInfo = await User.findOne({
       where: { userId },
     });
 
     console.log("****** --- UserRepository.getUserbyId Returns ---");
-
+    // 리턴
     return userInfo;
   };
 
   // userId와 password 동시에 맞는 1명의 유저를 찾는다.
   getUserbyNicknamePw = async (nickname, password) => {
     console.log("****** --- UserRepository.getUserbyNicknamePw ---");
-
+    // 찾아서
     const userInfo = await User.findOne({
       where: { nickname, password },
     });
 
     console.log("****** --- UserRepository.getUserbyNicknamePw Returns ---");
-
+    // 리턴
     return userInfo;
   };
 
   // User DB 생성
   createUser = async (nickname, password) => {
     console.log("****** --- UserRepository.createUser ---");
-
+    // 전달받은 인자를 담아 DB에 전달하여 저장합니다.
     const createUserData = await User.create({ nickname, password });
 
     console.log("****** --- UserRepository.createUser Returns ---");
-
+    // 방금 생성한 유저 데이터를 리턴
     return createUserData;
   };
 
@@ -57,12 +60,13 @@ class UserRepository {
   getAllUsers = async (orderBy = "DESC") => {
     console.log("****** --- UserRepository.getAllUsers ---");
 
+    // 지금까지 가입된 유저의 정보를 가입된 날짜의 orderBy 순서로 확보하여,
     const allUsers = await User.findAll({
       order: [["createdAt", orderBy]],
     });
 
+    // 리턴
     console.log("****** --- UserRepository.getAllUsers Returns ---");
-
     return allUsers;
   };
 
@@ -70,12 +74,13 @@ class UserRepository {
   getAllLikedPosts = async (userId) => {
     console.log("****** --- UserRepository.getAllLikedPosts ---");
 
+    // 인자로 전달받은 유저 id가 가지고 있는 likedPosts 배열을 확보하여,
     const postIdsUserLiked = await User.findOne({
       where: { userId: userId },
     }).then((e) => e.likedPosts);
 
+    // 배열을 반환
     console.log("****** --- UserRepository.getAllLikedPosts Returns ---");
-
     return postIdsUserLiked; // 배열로 반환
   };
 
@@ -85,18 +90,21 @@ class UserRepository {
 
     // 지금까지 좋아한 배열을 불러옴
     let likedPosts = await this.getAllLikedPosts(userId);
-    likedPosts.push(postId); // 이번에 좋아한 게시글 id 하나를 추가함
+
+    // 이번에 좋아한 게시글 id 하나를 추가함
+    likedPosts.push(postId);
 
     // 서비스에 따라 혹시 중복되어 있을 수 있으므로 set으로 중복 제거 후 다시 배열화
     likedPosts = Array.from(new Set(likedPosts));
 
+    // userId 사용자 정보에 새로 세팅한 배열로 업데이트하여 저장
     const newLikedPosts = await User.update(
       { likedPosts: likedPosts },
       { where: { userId: userId } }
     );
 
+    // 이 메소는 확보된 새 배열을 리턴
     console.log("****** --- UserRepository.likePost Returns ---");
-
     return newLikedPosts;
   };
 
@@ -117,7 +125,6 @@ class UserRepository {
     );
 
     console.log("****** --- UserRepository.dislikePost Returns ---");
-
     return newLikedPosts;
   };
 }

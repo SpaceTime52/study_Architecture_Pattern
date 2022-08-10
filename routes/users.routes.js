@@ -8,7 +8,7 @@ const router = express.Router("./dsda");
 // 스웨거 모듈 임포트
 const { swaggerUi, specs } = require("../modules/swagger.js");
 
-// 컨트롤러 임포트
+// 라우터가 나누어 보낼 컨트롤러 인스턴스 확보
 const UsersController = require("../controllers/users.controller");
 const usersController = new UsersController();
 
@@ -18,7 +18,7 @@ console.log("** --- User Router ---");
 router.post("/signup", usersController.signUp);
 // TASK 2 : 로그인 기능 ('/api/login')
 router.post("/login", usersController.login);
-// '/api' 주소에 곧장 swagger 사용
+// '/api' 이 경로 주소에 곧장 swagger 페이지 사용
 router.use("/", swaggerUi.serve, swaggerUi.setup(specs));
 // 이 파일의 router 객체를 외부에 공개합니다.
 

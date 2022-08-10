@@ -5,10 +5,12 @@
 const express = require("express");
 const router = express.Router();
 
-//미들웨어 임포트
-const Auth = require("../middlewares/auth-middleware"); // 유저인증
-const auth = new Auth();
-const authMiddleware = auth.authMiddleware; // 유저인증 미들웨어 임포트
+// 각 api 접근할 때마다 사용자 인증을 위한 미들웨어 임포트
+const Auth = require("../middlewares/auth-middleware"); // 유저인증 클래스
+const auth = new Auth(); // 유저 인증 클래스의 인스턴스 확보
+const authMiddleware = auth.authMiddleware; // ---> 미들웨어로 사용할 인스턴스 메소드
+
+// 라우터가 나누어 보낼 컨트롤러 인스턴스 확보
 const PostsController = require("../controllers/posts.controller"); // 컨트롤러 임포트
 const postsController = new PostsController(); // 컨트롤러 임포트
 

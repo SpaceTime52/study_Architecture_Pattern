@@ -1,3 +1,5 @@
+// 게시글 관련 인풋데이터로 사용할법한 mock 데이터를 정리해놓고, export하여 외부에서 사용할 수 있게 함
+
 const createPostReq = {
   title: "게시글 제목입니다. sImlhdCI6MTY1OTk2MzA",
   content: "content 입니다.",

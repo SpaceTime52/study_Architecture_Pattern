@@ -23,6 +23,8 @@ const mockUser_ResLocals = {
   updatedAt: new Date("2022-08-07T05:05:33.000Z"),
 };
 
+// 유저 관련 인풋데이터로 사용할법한 mock 데이터를 정리해놓고, export하여 외부에서 사용할 수 있게 함
+
 const allUsersRes = [
   {
     userId: 3,

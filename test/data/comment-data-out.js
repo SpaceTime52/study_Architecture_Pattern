@@ -1,3 +1,5 @@
+// 댓글 관련 아웃풋(응답) 데이터로 사용할법한 mock 데이터를 정리해놓고, export하여 외부에서 사용할 수 있게 함
+
 const createCommentRes = {
   message: "댓글을 작성하였습니다.",
 };

@@ -6,10 +6,17 @@ const UserRepository = require("../repositories/users.repository");
 const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 
 // 우리가 Export할 미들웨어 : authMiddleware
+// function authMiddleware() 함수 상태로는 테스트코드가 잘 작동하지 않는 것 같아서,
+// 클래스로 선언하고 그 인스턴스를 테스트하게 되었습니다.
+
 class Auth {
+  // 클래스 안에서 User 저장소 인스턴스를 사용합니다.
   userRepository = new UserRepository();
 
+  // 검증할 함수를 클래스 안의 메소드로 선언하여였습니다.
+  // 클래스의 인스턴스를 만들고 [인스턴스.메소드]를 따로 활용해 그 기능을 검증할 예정입니다.
   authMiddleware = (req, res, next) => {
+    // authMiddleware 메소드 입출입을 확인하기 위한 콘솔로그입니다.
     console.log("------ 🤔 Authorization Checking ------");
 
     try {

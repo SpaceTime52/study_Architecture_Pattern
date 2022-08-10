@@ -5,11 +5,12 @@
 const { Post } = require("../models");
 const Sequelize = require("sequelize");
 
+// 저장소 클래스를 선언합니다.
 class PostRepository {
   // postId를 받아 게시글 1개의 정보를 반환한다.
   getPost = async (postId) => {
     console.log("****** --- PostRepository.getPost ---");
-
+    // postId에 해당하는 게시글 정보를 찾아서 리턴
     const thisPost = await Post.findOne({ where: { _id: postId } });
     return thisPost;
   };
@@ -17,10 +18,13 @@ class PostRepository {
   // 작성된 모든 게시글의 상세 정보를 요청한 발행일 순서대로 으로 모두 불러옴 (기본값 날짜 내림차순)
   getAllPosts = async (orderBy = "DESC") => {
     console.log("****** --- PostRepository.getAllPosts ---");
+
+    // DB에서 날짜에 내림차순으로 데이터를 받아옴
     const allPosts = await Post.findAll({
       order: [["createdAt", orderBy]],
     });
 
+    // 받아온 게시글들을 리턴
     console.log("****** --- PostRepository.getAllPosts Returns---");
     return allPosts;
   };
@@ -34,6 +38,7 @@ class PostRepository {
       order: [["likes", "DESC"]],
     });
 
+    // 찾아온 배열 반환
     console.log("****** --- PostRepository.getPostsByLikedArray Returns---");
     return allPostsUserLiked;
   };
@@ -41,6 +46,8 @@ class PostRepository {
   // 전달된 내용으로 새로운 게시글을 작성한다. returns 작성한 게시글정보
   createNewPost = async (userId, nickname, title, content) => {
     console.log("****** --- PostRepository.createNewPost ---");
+
+    // 전달 받은 4가지 인자를 담아 새로운 게시글을 DB에 저장
     const createdPost = await Post.create({
       userId,
       nickname,
@@ -48,6 +55,7 @@ class PostRepository {
       content,
     });
 
+    // 전달 받은 데이터 리턴
     console.log("****** --- PostRepository.createNewPost Returns ---");
     return createdPost;
   };
@@ -55,11 +63,14 @@ class PostRepository {
   // 전달된 postId에 해당하는 게시글을 수정하여 저장한다. returns 수정한 게시글정보
   updatePost = async (postId, title, content) => {
     console.log("****** --- PostRepository.updatePost ---");
+
+    // 전달 받은 타이틀, 컨텐츠를 넣어 업데이트
     const updatedPost = await Post.update(
       { title, content }, // 어떤 댓글을 수정할지 넣고,
       { where: { _id: postId } }
     );
 
+    // 업데이트 게시글을 리턴
     console.log("****** --- PostRepository.updatePost Returns---");
     return updatedPost;
   };
@@ -73,8 +84,8 @@ class PostRepository {
       { where: { _id: postId } }
     );
 
+    // 이번에 좋아한 게시글의 좋아요 수를 리턴
     console.log("****** --- PostRepository.likePost Returns---");
-
     return likedPost.likes;
   };
 
@@ -87,6 +98,7 @@ class PostRepository {
       { where: { _id: postId } }
     );
 
+    // 이번에 좋아한 게시글의 좋아요 수를 리턴
     console.log("****** --- PostRepository.dislikePost Returns ---");
     return dislikedPost.likes;
   };
@@ -94,8 +106,10 @@ class PostRepository {
   // 전달된 postId에 해당하는 게시글을 삭제한. returns 삭제한 게시글정보
   deletePost = async (postId) => {
     console.log("****** --- PostRepository.deletePost ---");
+    // postId에 해당하는 게시글을 DB에서 삭제 수행
     const deletedPost = await Post.destroy({ where: { _id: postId } });
 
+    // 삭제한 게시글 정보를 리턴
     console.log("****** --- PostRepository.deletePost Returns ---");
     return deletedPost;
   };

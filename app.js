@@ -13,7 +13,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 
-// DB에 연결 - sync() 사용으로 DB 모델(./models)의 변화를 감지하여 동기화
+// DB에 연결
 const { sequelize } = require("./models");
 
 // "/api" path로 연결하는 라우터 연결 (우선 routes/index.js로)

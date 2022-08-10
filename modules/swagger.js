@@ -1,6 +1,8 @@
+// 스웨거 관련 모듈 임포트
 const swaggerUi = require("swagger-ui-express");
 const swaggereJsdoc = require("swagger-jsdoc");
 
+// 스웨거 메인페이지 콘텐츠 정보 입력
 const options = {
   swaggerDefinition: {
     info: {

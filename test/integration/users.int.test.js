@@ -1,15 +1,18 @@
 const request = require("supertest"); // http 요청을 보낼 수 있는 라이브러리
-const app = require("../../app"); // 서버
-const { sequelize } = require("../../models");
-const { User } = require("../../models");
+const app = require("../../app"); // app express 객체에 요청을 보냄
+const { sequelize } = require("../../models"); // DB를 초기화하는 데에 sequelize 객체를 사용
+const { User } = require("../../models"); // 테스트 과정에서 DB를 직접 확인하는 경우가 있으므로 DB 모델을 직접 임포트
 
 const userDataIn = require("../data/user-data-in.js"); // 받아올 mock 데이터
 const userDataOut = require("../data/user-data-out.js"); // 나와야 할 mock 데이터
 
-// 예시 코드
+// before All, DB 초기화
 beforeAll(async () => {
   await sequelize.sync();
 });
+
+// --------------- 여기서부터 검증(Test) 시작 -------------- //
+
 describe("POST /api/signup", () => {
   test("모두 기입 시 회원가입 수행", async () => {
     const response = await request(app)
