@@ -1,6 +1,6 @@
 
 ### 회원가입
-POST http://nodeapi.myspaceti.me:8000/api/signup
+POST http://nodeapi.myspaceti.me:8001/api/signup
 Content-Type: application/json
 
 {  
