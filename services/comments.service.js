@@ -31,7 +31,7 @@ class CommentService {
         comment
       );
 
-      return { status: 200, message: "댓글을 생성하였습니다." };
+      return { status: 201, message: "댓글을 생성하였습니다." };
     }
   };
 
@@ -89,7 +89,7 @@ class CommentService {
     } else {
       await this.commentRepository.updateComment(commentId, comment);
 
-      return { status: 200, message: "댓글을 수정하였습니다." };
+      return { status: 201, message: "댓글을 수정하였습니다." };
     }
   };
 
