@@ -9,8 +9,8 @@ const router = express.Router("./dsda");
 const { swaggerUi, specs } = require("../modules/swagger.js");
 
 // 라우터가 나누어 보낼 컨트롤러 인스턴스 확보
-const UsersController = require("../controllers/users.controller");
-const usersController = new UsersController();
+const UsersController = require("../controllers/users.controller"); // 클래스
+const usersController = new UsersController(); // 인스턴스
 
 console.log("** --- User Router ---");
 

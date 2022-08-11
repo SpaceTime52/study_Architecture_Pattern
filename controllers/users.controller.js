@@ -1,26 +1,14 @@
 /* 여기에 전달될 클라이언트의 요청을 적절히 나누어 처리보내고 반환해주는 역할을 함 (요청 수신, 데이터 검증, 결과 반환, 예외처리) */
+
 // 라우터에서 사용할 컨트롤러 클래스와 그 안의 메소드를 정의
 // 그 과정에서, 다시 각 메소드가 사용할 서비스 클래스를 필요로 함(require)
 
 const UserService = require("../services/users.service");
 const Joi = require("joi");
 
-// const signupSchema = Joi.object({
-//   nickname: Joi.string().min(3).max(30).alphanum().required(),
-//   // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)
-//   password: Joi.string().min(4).max(30).alphanum().required(),
-//   // 최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패 (API에서 검토)
-//   confirm: Joi.string().min(4).max(30).alphanum().required(),
-// });
-// // 로그인 할 떄 user 입력된 정보에 대한 joi 객체
-// const loginSchema = Joi.object({
-//   nickname: Joi.string().min(3).max(30).alphanum().required(),
-//   password: Joi.string().min(4).max(30).required(),
-// });
-
 // Post의 컨트롤러(Controller)역할을 하는 클래스
 class UsersController {
-  userService = new UserService();
+  userService = new UserService(); // 인스턴스
   signupSchema = Joi.object({
     nickname: Joi.string().min(3).max(30).alphanum().required(),
     // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)

@@ -12,7 +12,6 @@ beforeAll(async () => {
 });
 
 // --------------- 여기서부터 검증(Test) 시작 -------------- //
-
 describe("POST /api/signup", () => {
   test("모두 기입 시 회원가입 수행", async () => {
     const response = await request(app)
@@ -28,6 +27,7 @@ describe("POST /api/signup", () => {
     console.log(userInfo);
     expect(userInfo).toBeTruthy();
   });
+
   test("잘못기입 시 (짧은 패스워드) 회원가입 반려", async () => {
     const response = await request(app).post("/api/signup").send({
       nickname: "Tester10",
@@ -44,6 +44,7 @@ describe("POST /api/signup", () => {
     });
     expect(response.statusCode).toBe(400);
   });
+
   test("쿠키가 존재하는 경우(이미 로그인 된 경우) 반려", async () => {
     const response = await request(app)
       .post("/api/signup")
@@ -58,6 +59,7 @@ describe("POST /api/signup", () => {
       });
     expect(response.statusCode).toBe(400);
   });
+
   test("비밀번호가 닉네임을 포함할 경우 반려", async () => {
     const response = await request(app).post("/api/signup").send({
       nickname: "Tester10",
